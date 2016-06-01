@@ -14,7 +14,7 @@ TEX = pdflatex --shell-escape
 BIB = biber
 
 FILE = Bericht
-IMAGEPATH = .ressources/
+IMAGEPATH = .images/
 
 
 # =====[ Targets ]==============================================================
