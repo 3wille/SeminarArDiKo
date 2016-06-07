@@ -1,151 +1,70 @@
-%
-% Bericht.tex
-%
-% Author:  Lars Thoms <lars.thoms@spacecafe.org>
-% Version: 2016-04-30
-%
-% Default LaTex-template for papers
-%
-% Body starts at line 109
-%
-
-% ======[ Configuration ]=======================================================
-
-\newcommand{\metaTitle}{such Thema}
-\newcommand{\metaAuthor}{Julian Deinert, Frederik Wille}
-\newcommand{\metaHeader}{}
-\newcommand{\imagePath}{.ressources/}
-\newcommand{\bibFile}{Bericht.bib}
-
-
-% ======[ Header ]==============================================================
-
-\documentclass[
-    paper=A4,pagesize,  % Set papersize to DIN A4
-    ngerman,            % Set language to german with new hyphenation
-    oneside,            % Set to simplex printouts
-    parskip=full*       % Pretty parskip
-]{scrartcl}
-
-\usepackage[
-    inner=25mm,
-    outer=15mm,
-    top=10mm,
-    bottom=10mm,
-    includeheadfoot
-]{geometry}
-
-\usepackage[
-    final,              % Enable microtype
-    tracking=true,
-    kerning=true,
-    spacing=true,
-    factor=1100,        % Add 10% to the protrusion amount (default is 1000)
-    stretch=10,         % Reduce stretchability (default is 20)
-    shrink=10           % Reduce shrinkability (default is 20)
-]{microtype}
-
-\usepackage[
-    pdftitle={\metaTitle},
-    pdfauthor={\metaAuthor},
-    bookmarks=true,
-    hidelinks
-]{hyperref}
-
-\usepackage[T1]{fontenc}
+\documentclass[1pt,a4paper,final]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[binary-units=true]{siunitx}
-\usepackage[backend=biber]{biblatex}
-\usepackage{
-    babel,              % Babel for language-support
-    fixltx2e,           % Bugfixes of LaTeX2e
-    ellipsis,           % Typography
-    textcomp,           % Additional text symbols
-    graphicx,           % Image support
-    tabularx,           % Fancy tables
-    subfigure,          % Subfigures
-    upgreek,            % Greek symbols
-    amsmath,            % Math­e­mat­i­cal type­set­ting
-    amssymb,            % Additional math­e­mat­i­cal symbols
-    multicol,           % Multicolumn
-    fancyhdr,           % Fancy header
-    listings,           % Code-Highlightning
-    tikz,
-    pgfplots,
-    wrapfig
-}
+\usepackage[german]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{natbib}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{url}
+\usepackage{acronym}
+%\usepackage{geometry}
+%\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=30mm,rmargin=30mm}
+\usepackage{natbib}
+%\addbibresource{bibliografie}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
 
-\addbibresource{\bibFile}
-\SetTracking{encoding=*, shape=sc}{45}
-\graphicspath{{\imagePath}}
-\setlength{\headheight}{20pt}
-\pagestyle{fancyplain}
-\microtypecontext{spacing=nonfrench}
-\fancyhead[L]{\metaHeader}
-\fancyhead[R]{\metaAuthor}
-% \setcounter{secnumdepth}{-1}
-\newcommand{\image}[3]{\begin{figure}[h!]\centering\includegraphics[width=#1\textwidth]{#2}\label{#3}\end{figure}}
-\newcommand{\imagecap}[4]{\begin{figure}[h!]\centering\includegraphics[width=#1\textwidth]{#2}\label{#4}\caption{#3}\end{figure}}
-\lstset{
-    frame=single,
-    numbers=left,
-    language=Bash,
-    breaklines=true,
-    breakatwhitespace=true,
-    postbreak=\hbox{$\hookrightarrow$ },
-    showstringspaces=false,
-    literate=%
-        {Ö}{{\"O}}1
-        {Ä}{{\"A}}1
-        {Ü}{{\"U}}1
-        {ß}{{\ss}}2
-        {ü}{{\"u}}1
-        {ä}{{\"a}}1
-        {ö}{{\"o}}1
+\title{\LARGE \bf
+Bla
 }
 
 
-% ======[ Body ]================================================================
+\author{Frederik Wille, Julian Deinert}
+\date{}
 
 \begin{document}
 
-\begin{titlepage}
-    \vspace{75pt}
-    \textbf{\Huge \metaTitle}
-
-    \vspace{20pt}
-
-    {\Large Seminararbeit Architekturen und Dienste von Kommunikationsetzen}
 
 
-    \vspace{5pt}
+%\maketitle
+%\thispagestyle{empty}
+%\pagestyle{empty}
 
-    Fachbereich Informatik\\
-    Fakultät für Mathematik, Informatik und Naturwissenschaften\\
-    Universität Hamburg
-
-    \vfill
-
-
-    \vfill
-    \Large
-    Autor: Julian Deinert, Frederik Wille
-    Betreuer: Torsten M. Runge
-
-    Version: 2016-05-03
-    \vspace{75pt}
-\end{titlepage}
-
+\maketitle
+\thispagestyle{empty}
+\newpage
+\thispagestyle{empty}
 \tableofcontents
+\newpage
+\setcounter{page}{1}
 
+\section*{Abkürzungen}
+\begin{acronym}
+		\acro{igp}[IGP]{Interiour Gateway Protocol}
+		\acro{as}[AS]{Autonomous System}
+\end{acronym}
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+ABSTRACT
 
-\input{01_Einleitung.tex}
+\end{abstract}
 
-% \listoffigures
-% \listoftables
+\section{Einleitung}
+\section{Routing Algorithmen}
+\subsection{IGP}
+\ac{igp} \ac{igp}
+\subsection{Distance Vector}
+\subsection{Link-State}
+\subsubsection{Dijkstra-Algorithmus}
+\section{Open Shortest Path First}
+\subsection{Areas}
+\subsection{Router Typen}
+\subsection{Metriken}
 
-\clearpage
-\nocite{*}
-\printbibliography
 
 \end{document}
