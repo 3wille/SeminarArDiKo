@@ -5,7 +5,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{natbib}
+\usepackage[backend=biber]{biblatex}
 \usepackage{gensymb}
 \usepackage{graphicx}
 \usepackage[onehalfspacing]{setspace}
@@ -13,8 +13,7 @@
 \usepackage{acronym}
 %\usepackage{geometry}
 %\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=30mm,rmargin=30mm}
-\usepackage{natbib}
-%\addbibresource{bibliografie}
+\addbibresource{Bericht.bib}
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}
 
@@ -24,7 +23,7 @@ Bla
 
 
 \author{Frederik Wille, Julian Deinert}
-\date{}
+\date{\today}
 
 \begin{document}
 
@@ -66,5 +65,7 @@ ABSTRACT
 \subsection{Router Typen}
 \subsection{Metriken}
 
-
+\clearpage
+\nocite{*}
+\printbibliography
 \end{document}
