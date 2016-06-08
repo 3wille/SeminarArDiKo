@@ -79,12 +79,14 @@ ABSTRACT
 
 \section{Einleitung/Motivation}
 Freddy
+% Layer 3
 \section{Routing Algorithmen}
 \subsection{IGP und EGP}
 % Freddy
 Im globalem Internet werden, im Bezug auf die Beziehung zweier kommunizierenden Router, zwei Arten von Routing Protokollen verwendet. Unterschieden werden Protokolle in \ac{egp}, die zwischen zwei Netzen Routen vermitteln und \ac{igp}, die innerhalb eines Netzes das Routing übernehmen. \\
 Die ansonsten getrennten Netze werden durch ein oder mehrere Gateways verbunden. Gateways sind Router, die zwei Netze über ein \ac{egp} verbinden. Über das \ac{egp} werden Routen zu den eigenen und auch anderen Netzen ausgetauscht. Im Internet sind Netze als Autonome Systeme organisiert, die \ac{bgp} als \ac{egp} nutzen.\\
-Innerhalb eines Netzes müssen Routen von jedem Rechner zu jedem anderen Rechner gefunden werden. Über ein \ac{igp} kommunizieren die Router des Netzes die von ihnen erreichbaren Rechner. Meistens sind Gateways auch Router für das interne Netz.
+Innerhalb eines Netzes müssen Routen von jedem Rechner zu jedem anderen Rechner gefunden werden. Über ein \ac{igp} tauschen die Router des Netzes die von ihnen erreichbaren Rechner aus.
+Ein Rechner ist dabei immer an mindestens einem Router über ein Layer-2-Netz angebunden, das heißt mehrere Rechner können über Switches und Hubs an einen Port des Routers angeschlossen sein.
 \subsection{Distance-Vector-Routing-Protokolle}
 Freddy
 \subsection{Link-State-Routing-Protokolle}
