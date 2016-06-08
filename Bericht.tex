@@ -74,7 +74,7 @@ ABSTRACT
 
 \end{abstract}
 
-\section{Einleitung}
+\section{Einleitung/Motivation}
 Freddy
 \section{Routing Algorithmen}
 \subsection{IGP}
@@ -83,7 +83,9 @@ Freddy
 \subsection{Distance-Vector-Routing-Protokolle}
 Freddy
 \subsection{Link-State-Routing-Protokolle}
-Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen. Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur direkte Verbindungen zu ihren Nachbarknoten zu übermitteln.
+Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen. Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln.
+Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt.\\
+Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die Router in seine Routing-Tabelle ein, mit denen er direkt verbunden ist. Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt. Das Kantengewicht kann zum Beispiel die Latenz zum Router sein. Dies sichert, dass dem Router bekannt ist, zu welchem anderen Router er die qualitativ beste Verbindung hat.
 \subsubsection{Dijkstra-Algorithmus}
 Julian
 \section{Open Shortest Path First}
@@ -91,7 +93,7 @@ Julian
 \subsection{Areas}
 \subsection{Router Typen}
 \subsection{Metriken}
-\section{Fazit}
+\section{Fazit/Ausblick}
 Julian
 
 \clearpage
