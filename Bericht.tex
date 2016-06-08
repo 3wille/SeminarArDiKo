@@ -44,7 +44,7 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 	{\huge\bfseries Routing: Open Shortest Path First (working title)\par}
 	\vspace{1.5cm}
 	{\large Seminararbeit für die Lehrveranstaltung \\ \Large Architekturen und Dienste von Kommunikationsnetzen\par}
-	
+
 	\vfill
 	\vfill
 	{\Large\itshape Frederik Wille, Julian Deinert\par}
@@ -64,8 +64,10 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 \section*{Abkürzungen}
 \begin{acronym}
 		\acro{igp}[IGP]{Interiour Gateway Protocol}
+		\acro{egp}[EGP]{Exteriour Gateway Protocol}
 		\acro{as}[AS]{Autonomous System}
 		\acro{ospf}[OSPF]{Open Shortest Path First}
+		\acro{ip}[IP]{Internet Protocol}
 \end{acronym}
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -77,15 +79,16 @@ ABSTRACT
 \section{Einleitung/Motivation}
 Freddy
 \section{Routing Algorithmen}
-\subsection{IGP}
-Freddy
-\ac{igp} \ac{igp}
+\subsection{IGP und EGP}
+% Freddy
+Im globalem Internet werden, im Bezug auf die Beziehung zweier kommunizierenden Router, zwei Arten von Routing Protokollen verwendet. Unterschieden werden Protokolle in \ac{egp}, die zwischen zwei Netzen Routen vermitteln und \ac{igp}, die innerhalb eines Netzes das Routing übernehmen. \\
+Die ansonsten getrennten Netze werden durch ein oder mehrere Gateways verbunden. Gateways sprechen mindestens ein \ac{egp} und tauschen darüber Routen zu den eigenen und auch anderen benachbarten Netzen aus. \\
 \subsection{Distance-Vector-Routing-Protokolle}
 Freddy
 \subsection{Link-State-Routing-Protokolle}
 Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen. Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln.
 Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt.\\
-Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die Router in seine Routing-Tabelle ein, mit denen er direkt verbunden ist. Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt. Das Kantengewicht kann zum Beispiel die Latenz zum Nachbar-Router sein. Dies sichert, dass dem Router bekannt ist, zu welchem anderen Router er die qualitativ beste Verbindung hat. Nachdem jeder Router all seine Nachbar-Router erkannt hat und seine lokale Routing-Tabelle aufgebaut hat, schickt dieser Link-State-Pakete an seine Nachbar-Router. Diese Link-State-Pakete enthalten alle Nachbar-Router des Routers und die Kantengewichte zu diesen, sowie eine fortlaufende Sequenznummer und einen Zähler für das Alter des Pakets. Jeder Router empfängt die Link-State-Pakete seiner Nachbar-Router und leitet diese an all seine Nachbar-Router weiter, die diese Pakete noch nicht erhalten haben. Durch die Link-State-Pakete erhält jeder Router mehr Information über die Topologie des Netzwerks. Die ankommenden Pakete werden von jedem Router in einem Paketpuffer verarbeitet. Bei dieser Verarbeitung spielen die zwei Zähler in den Link-State-Paketen eine wichtige Rolle zur Fehlererkennung.  
+Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die Router in seine Routing-Tabelle ein, mit denen er direkt verbunden ist. Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt. Das Kantengewicht kann zum Beispiel die Latenz zum Nachbar-Router sein. Dies sichert, dass dem Router bekannt ist, zu welchem anderen Router er die qualitativ beste Verbindung hat. Nachdem jeder Router all seine Nachbar-Router erkannt hat und seine lokale Routing-Tabelle aufgebaut hat, schickt dieser Link-State-Pakete an seine Nachbar-Router. Diese Link-State-Pakete enthalten alle Nachbar-Router des Routers und die Kantengewichte zu diesen, sowie eine fortlaufende Sequenznummer und einen Zähler für das Alter des Pakets. Jeder Router empfängt die Link-State-Pakete seiner Nachbar-Router und leitet diese an all seine Nachbar-Router weiter, die diese Pakete noch nicht erhalten haben. Durch die Link-State-Pakete erhält jeder Router mehr Information über die Topologie des Netzwerks. Die ankommenden Pakete werden von jedem Router in einem Paketpuffer verarbeitet. Bei dieser Verarbeitung spielen die zwei Zähler in den Link-State-Paketen eine wichtige Rolle zur Fehlererkennung.
 \subsubsection{Dijkstra-Algorithmus}
 Julian
 \section{Open Shortest Path First}
