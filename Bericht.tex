@@ -81,6 +81,7 @@ ABSTRACT
 \section{Einleitung/Motivation}
 Freddy
 % Layer 3
+% routing vs forwarding
 \section{Shortes-Path Algorithmen}
 Freddy?
 \subsection{Bellman-Ford Algorithmus}
@@ -97,7 +98,12 @@ Innerhalb eines Netzes müssen Routen von jedem Rechner zu jedem anderen Rechner
 Ein Rechner ist dabei immer an mindestens einem Router über ein Layer-2-Netz angebunden, das heißt mehrere Rechner können über Switches und Hubs an einen Port des Routers angeschlossen sein. \\
 \ac{igp}s werden in zwei Klassen unterteilt, Distance-Vector- und Link-State-Protokolle.
 \subsection{Distance-Vector-Routing-Protokolle}
-Freddy
+% Freddy
+Die Klasse der Distance-Vector-Protokolle setzen den Bellman-Ford-Algorithmus um. Dazu werden periodisch Arrays, auch Vektoren genannt, zu den direkten Nachbarroutern verschickt. Jeder dieser Vektoren enthält die eigenen Distanzen zu allen Zielen, die der Router zum Zeitpunkt des Sendens kennt. Dieser Distanz-Vektor gibt der Protokollklasse ihren Namen. \\
+Zu Beginn erkennt jeder Router seine direkten Nachbarn und ermittelt die Distanz zu diesem. Aus den direkten Nachbarn wird dann ein Vektor gebildet, der dann an alle Nachbarn geschickt wird. Nun empfangen alle Router von ihren Nachbarn eine Reihe an Vektoren, aus denen eine Routing Tabelle gebaut werden muss. Dafür wird pro aktuell bekanntem Ziel der minimale Eintrag aller empfangener Vektoren bestimmt und als neue Distanz in die Routing Tabelle aufgenommen. Dazu wird die Adresse des Routers, von dem die Information stammt und der dazugehörige physikalische Port vermerkt. Die Herkunft wird nur lokal zum Forwarding benötigt und wird somit nicht im Vektor mitgeschickt.\\
+Es werden nach und nach Routen zu allen Zielen bekannt und sie konvergieren über die Zeit gegen die beste Route. Die benötigte kann je nach gewählter Update-Rate sehr hoch sein. Bei \ac{rip} als Beispiel wird nur alle 30 Sekunden ein Vektor verschickt. Dies führt dazu, dass bei nur 4 Routern, die in Reihe verbunden sind, bereits eine Minute für  die drei Updates benötigt wird\footnote{bei den Zeitpunkten 0s, 30s, 60s}. \\
+Sobald ein Router ausfällt ensteht das Count-to-infinity Problem. 
+% count to infinity
 \subsection{Link-State-Routing-Protokolle}
 Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen. Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln.
 Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt.\\
