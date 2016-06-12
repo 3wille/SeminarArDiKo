@@ -70,6 +70,8 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 		\acro{ospf}[OSPF]{Open Shortest Path First}
 		\acro{ip}[IP]{Internet Protocol}
 		\acro{rip}[RIP]{Routing Information Protocol}
+		\acro{ttl}[TTL]{Time to live}
+		\acro{ack}[ACK]{Acknowledgement}
 \end{acronym}
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -106,7 +108,8 @@ Freddy
 \subsection{Link-State-Routing-Protokolle}
 Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen. 
 Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln. 
-Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt.\\
+Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt.
+
 Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die Router in seine Routing-Tabelle ein, mit denen er direkt verbunden ist. 
 Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt. 
 Das Kantengewicht kann zum Beispiel die Latenz zum Nachbar-Router sein. 
@@ -114,9 +117,25 @@ Dies sichert, dass dem Router bekannt ist, zu welchem anderen Router er die qual
 Diese Link-State-Pakete enthalten alle Nachbar-Router des Routers und die Kantengewichte zu diesen, sowie eine fortlaufende Sequenznummer und einen Zähler für das Alter des Pakets. 
 Jeder Router empfängt die Link-State-Pakete seiner Nachbar-Router und leitet diese an all seine Nachbar-Router weiter, die diese Pakete noch nicht erhalten haben. 
 Durch die Link-State-Pakete erhält jeder Router mehr Information über die Topologie des Netzwerks. 
-Die ankommenden Pakete werden von jedem Router in einem Paketpuffer verarbeitet. 
+Die ankommenden Pakete werden von jedem Router in einem Paketpuffer verarbeitet.
+
 Bei dieser Verarbeitung spielen die zwei Zähler in den Link-State-Paketen eine wichtige Rolle zur Fehlererkennung. 
-Diese verhindern, dass ein Router veraltete Topologie-Informationen in seine Routing-Tabelle einträgt. Dies sichert der Router, indem er nur Pakete mit der aktuell höchsten Sequenznummer annimmt. Pakete die zwar später eingetroffen sind, jedoch eine niedrigere Sequenznummer haben, werden als veraltet behandelt und verworfen. 
+Diese verhindern, dass ein Router veraltete Topologie-Informationen in seine Routing-Tabelle einträgt. Dies sichert der Router, indem er nur Pakete mit der aktuell höchsten Sequenznummer annimmt. 
+Pakete die zwar später eingetroffen sind, jedoch eine niedrigere Sequenznummer haben, werden als veraltet behandelt und verworfen. 
+Eine Problematik bei diesem Vorgehen ist allerdings, dass auch Fehler in der Sequenznummer auftauchen können. 
+So führt ein \textit{1-bit} Fehler bei der Sequenznummer dazu, dass aus Sequenznummer 4 Sequenznummer 65540 wird.
+Somit würden die Sequenznummern 5 bis 65540 als veraltete verworfen werden, bis der Router wieder neue Informationen akzeptiert.
+Ein ähnliches Problem tritt auf, wenn ein Router abstürzt und mit der Sequenznummer 0 neu beginnt.
+Um diesen Problemen entegegen zu wirken, enthält das Paket auch jeweils einen Alterszähler.
+Dieser wird zu Beginn auf eine vordefinierte \ac{ttl} eingestellt und beispielsweise jede Sekunde um 1 dekrementiert. 
+Erreicht der Alterszähler den Wert 0, wird das Paket verworfen.
+
+Nachdem ein Paket als aktuell eingestuft wurde, wird es auf allen Leitungen, ausgenommen der Leitung auf der es empfangen wurde, weitergeleitet.
+Hierfür pflegt der Router innerhalb des Paketpuffers Send und \ac{ack} Flags für jeden Knoten.
+Erreicht den Router ein Paket eines anderen Routers über nur eine Leitung, so wird das Send Flag bei allen anderen Leitungen gesetzt und das \ac{ack} Flag bei der Leitung gesetzt, von der das Paket kam.
+Erreicht ein Paket eines anderen Routers den Router aber über zwei oder mehr unterschiedliche Leitungen, so wird auf all diesen Leitungen das \ac{ack} Flag gesetzt und das Send Flag auf den verbleibenden Leitungen.
+
+
 
 
 \subsubsection{Dijkstra-Algorithmus}
