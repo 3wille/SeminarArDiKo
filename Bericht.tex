@@ -82,12 +82,8 @@ ABSTRACT
 Freddy
 % Layer 3
 % routing vs forwarding
-\section{Shortes-Path Algorithmen}
-Freddy?
-\subsection{Bellman-Ford Algorithmus}
-Freddy
-\subsection{Dijkstra-Algorithmus}
-Julian
+
+
 
 \section{Routing Protokolle}
 \subsection{IGP und EGP}
@@ -104,10 +100,27 @@ Zu Beginn erkennt jeder Router seine direkten Nachbarn und ermittelt die Distanz
 Es werden nach und nach Routen zu allen Zielen bekannt und sie konvergieren über die Zeit gegen die beste Route. Die benötigte kann je nach gewählter Update-Rate sehr hoch sein. Bei \ac{rip} als Beispiel wird nur alle 30 Sekunden ein Vektor verschickt. Dies führt dazu, dass bei nur 4 Routern, die in Reihe verbunden sind, bereits eine Minute für  die drei Updates benötigt wird\footnote{bei den Zeitpunkten 0s, 30s, 60s}. \\
 Sobald ein Router ausfällt ensteht das Count-to-infinity Problem. 
 % count to infinity
+
+\subsubsection{Bellman-Ford Algorithmus}
+Freddy
 \subsection{Link-State-Routing-Protokolle}
-Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen. Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln.
+Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen. 
+Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln. 
 Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt.\\
-Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die Router in seine Routing-Tabelle ein, mit denen er direkt verbunden ist. Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt. Das Kantengewicht kann zum Beispiel die Latenz zum Nachbar-Router sein. Dies sichert, dass dem Router bekannt ist, zu welchem anderen Router er die qualitativ beste Verbindung hat. Nachdem jeder Router all seine Nachbar-Router erkannt hat und seine lokale Routing-Tabelle aufgebaut hat, schickt dieser Link-State-Pakete an seine Nachbar-Router. Diese Link-State-Pakete enthalten alle Nachbar-Router des Routers und die Kantengewichte zu diesen, sowie eine fortlaufende Sequenznummer und einen Zähler für das Alter des Pakets. Jeder Router empfängt die Link-State-Pakete seiner Nachbar-Router und leitet diese an all seine Nachbar-Router weiter, die diese Pakete noch nicht erhalten haben. Durch die Link-State-Pakete erhält jeder Router mehr Information über die Topologie des Netzwerks. Die ankommenden Pakete werden von jedem Router in einem Paketpuffer verarbeitet. Bei dieser Verarbeitung spielen die zwei Zähler in den Link-State-Paketen eine wichtige Rolle zur Fehlererkennung. Diese verhindern, dass ein Router veraltete Topologie-Informationen in seine Routing-Tabelle einträgt.
+Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die Router in seine Routing-Tabelle ein, mit denen er direkt verbunden ist. 
+Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt. 
+Das Kantengewicht kann zum Beispiel die Latenz zum Nachbar-Router sein. 
+Dies sichert, dass dem Router bekannt ist, zu welchem anderen Router er die qualitativ beste Verbindung hat. Nachdem jeder Router all seine Nachbar-Router erkannt hat und seine lokale Routing-Tabelle aufgebaut hat, schickt dieser Link-State-Pakete an seine Nachbar-Router. 
+Diese Link-State-Pakete enthalten alle Nachbar-Router des Routers und die Kantengewichte zu diesen, sowie eine fortlaufende Sequenznummer und einen Zähler für das Alter des Pakets. 
+Jeder Router empfängt die Link-State-Pakete seiner Nachbar-Router und leitet diese an all seine Nachbar-Router weiter, die diese Pakete noch nicht erhalten haben. 
+Durch die Link-State-Pakete erhält jeder Router mehr Information über die Topologie des Netzwerks. 
+Die ankommenden Pakete werden von jedem Router in einem Paketpuffer verarbeitet. 
+Bei dieser Verarbeitung spielen die zwei Zähler in den Link-State-Paketen eine wichtige Rolle zur Fehlererkennung. 
+Diese verhindern, dass ein Router veraltete Topologie-Informationen in seine Routing-Tabelle einträgt. Dies sichert der Router, indem er nur Pakete mit der aktuell höchsten Sequenznummer annimmt. Pakete die zwar später eingetroffen sind, jedoch eine niedrigere Sequenznummer haben, werden als veraltet behandelt und verworfen. 
+
+
+\subsubsection{Dijkstra-Algorithmus}
+Julian
 
 \section{Open Shortest Path First}
 \ac{ospf} \ac{ospf}
