@@ -135,11 +135,10 @@ Hierf체r pflegt der Router innerhalb des Paketpuffers Send und \ac{ack} Flags f�
 Erreicht den Router ein Paket eines anderen Routers 체ber nur eine Leitung, so wird das Send Flag bei allen anderen Leitungen gesetzt und das \ac{ack} Flag bei der Leitung gesetzt, von der das Paket kam.
 Erreicht ein Paket eines anderen Routers den Router aber 체ber zwei oder mehr unterschiedliche Leitungen, so wird auf all diesen Leitungen das \ac{ack} Flag gesetzt und das Send Flag auf den verbleibenden Leitungen.
 
-
-
-
+Angeschlossen an das Bef체llen der Routing-Tabelle des Routers beginnt jeder Router f체r sich die besten Routen durch das Netzwerk zu jedem anderen Router zu berechnen.
+Hierzu nutzen Link-State-Routing Protokolle den Dijkstra-Algorithmus.
 \subsubsection{Dijkstra-Algorithmus}
-Julian
+
 
 \section{Open Shortest Path First}
 \ac{ospf} \ac{ospf}
