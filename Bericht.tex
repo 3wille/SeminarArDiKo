@@ -91,50 +91,57 @@ Freddy
 \section{Routing Protokolle}
 \subsection{IGP und EGP}
 % Freddy
-Im globalem Internet werden, im Bezug auf die Beziehung zweier kommunizierenden Router, zwei Arten von Routing Protokollen verwendet. Unterschieden werden Protokolle in \ac{egp}, die zwischen zwei Netzen Routen vermitteln und \ac{igp}, die innerhalb eines Netzes das Routing übernehmen. \\
-Die ansonsten getrennten Netze werden durch ein oder mehrere Gateways verbunden. Gateways sind Router, die zwei Netze über ein \ac{egp} verbinden. Über das \ac{egp} werden Routen zu den eigenen und auch anderen Netzen ausgetauscht. Im Internet sind Netze als Autonome Systeme organisiert, die \ac{bgp} als \ac{egp} nutzen.\\
+Im globalem Internet werden, im Bezug auf die Beziehung zweier kommunizierenden Router, zwei Arten von Routing Protokollen verwendet. Unterschieden werden Protokolle in \ac{egp}, die zwischen zwei Netzen Routen vermitteln und \ac{igp}, die innerhalb eines Netzes das Routing übernehmen.
+
+Die ansonsten getrennten Netze werden durch ein oder mehrere Gateways verbunden. Gateways sind Router, die zwei Netze über ein \ac{egp} verbinden. Über das \ac{egp} werden Routen zu den eigenen und auch anderen Netzen ausgetauscht. Im Internet sind Netze als Autonome Systeme organisiert, die \ac{bgp} als \ac{egp} nutzen.
+
 Innerhalb eines Netzes müssen Routen von jedem Rechner zu jedem anderen Rechner gefunden werden. Über ein \ac{igp} tauschen die Router des Netzes die von ihnen erreichbaren Rechner aus.
-Ein Rechner ist dabei immer an mindestens einem Router über ein Layer-2-Netz angebunden, das heißt mehrere Rechner können über Switches und Hubs an einen Port des Routers angeschlossen sein. \\
+Ein Rechner ist dabei immer an mindestens einem Router über ein Layer-2-Netz angebunden, das heißt mehrere Rechner können über Switches und Hubs an einen Port des Routers angeschlossen sein.
+
 \ac{igp}s werden in zwei Klassen unterteilt, Distance-Vector- und Link-State-Protokolle.
 \subsection{Distance-Vector-Routing-Protokolle}
 % Freddy
-Die Klasse der Distance-Vector-Protokolle setzen den Bellman-Ford-Algorithmus um. Dazu werden periodisch Arrays, auch Vektoren genannt, zu den direkten Nachbarroutern verschickt. Jeder dieser Vektoren enthält die eigenen Distanzen zu allen Zielen, die der Router zum Zeitpunkt des Sendens kennt. Dieser Distanz-Vektor gibt der Protokollklasse ihren Namen. \\
-Zu Beginn erkennt jeder Router seine direkten Nachbarn und ermittelt die Distanz zu diesem. Aus den direkten Nachbarn wird dann ein Vektor gebildet, der dann an alle Nachbarn geschickt wird. Nun empfangen alle Router von ihren Nachbarn eine Reihe an Vektoren, aus denen eine Routing Tabelle gebaut werden muss. Dafür wird pro aktuell bekanntem Ziel der minimale Eintrag aller empfangener Vektoren bestimmt und als neue Distanz in die Routing Tabelle aufgenommen. Dazu wird die Adresse des Routers, von dem die Information stammt und der dazugehörige physikalische Port vermerkt. Die Herkunft wird nur lokal zum Forwarding benötigt und wird somit nicht im Vektor mitgeschickt.\\
-Es werden nach und nach Routen zu allen Zielen bekannt und sie konvergieren über die Zeit gegen die beste Route. Gezeigt wird dies in Abbildung 1a. Die benötigte kann je nach gewählter Update-Rate sehr hoch sein. Bei \ac{rip} als Beispiel wird nur alle 30 Sekunden ein Vektor verschickt. Dies führt dazu, dass bei nur 4 Routern, die in Reihe verbunden sind, bereits eine Minute für  die drei Updates benötigt wird\footnote{bei den Zeitpunkten 0s, 30s, 60s}.\\
-Sobald ein Router ausfällt ensteht das Count-to-infinity Problem. Dabei bekommt der Nachbar des ausgefallenen Routers, eine neue Router von anderen Nachbarn, erkennt jedoch nicht, dass die Route von ihm selbst kommt.\\
+Die Klasse der Distance-Vector-Protokolle setzen den Bellman-Ford-Algorithmus um. Dazu werden periodisch Arrays, auch Vektoren genannt, zu den direkten Nachbarroutern verschickt. Jeder dieser Vektoren enthält die eigenen Distanzen zu allen Zielen, die der Router zum Zeitpunkt des Sendens kennt. Dieser Distanz-Vektor gibt der Protokollklasse ihren Namen.
+
+Zu Beginn erkennt jeder Router seine direkten Nachbarn und ermittelt die Distanz zu diesem. Aus den direkten Nachbarn wird dann ein Vektor gebildet, der dann an alle Nachbarn geschickt wird. Nun empfangen alle Router von ihren Nachbarn eine Reihe an Vektoren, aus denen eine Routing Tabelle gebaut werden muss. Dafür wird pro aktuell bekanntem Ziel der minimale Eintrag aller empfangener Vektoren bestimmt und als neue Distanz in die Routing Tabelle aufgenommen. Dazu wird die Adresse des Routers, von dem die Information stammt und der dazugehörige physikalische Port vermerkt. Die Herkunft wird nur lokal zum Forwarding benötigt und wird somit nicht im Vektor mitgeschickt.
+
+Es werden nach und nach Routen zu allen Zielen bekannt und sie konvergieren über die Zeit gegen die beste Route. Gezeigt wird dies in Abbildung 1a. Die benötigte kann je nach gewählter Update-Rate sehr hoch sein. Bei \ac{rip} als Beispiel wird nur alle 30 Sekunden ein Vektor verschickt. Dies führt dazu, dass bei nur 4 Routern, die in Reihe verbunden sind, bereits eine Minute für  die drei Updates benötigt wird\footnote{bei den Zeitpunkten 0s, 30s, 60s}.
+
+Sobald ein Router ausfällt ensteht das Count-to-infinity Problem. Dabei bekommt der Nachbar des ausgefallenen Routers, eine neue Router von anderen Nachbarn, erkennt jedoch nicht, dass die Route von ihm selbst kommt.
+
 \begin{figure}[h]
 \includegraphics[width=1.0\textwidth]{images/count_to_inf.png}
 \caption[count to inf]{Count to Infinity Problem\footnotemark}
 \label{count_to_inf}
 \end{figure}
-\footnotetext{AndrewS.Tanenbaum2010} \\
+\footnotetext{AndrewS.Tanenbaum2010}
 Abbildung~\ref{count_to_inf}b zeigt das Count to Infinity Problem bei 5 in Reihe geschalteten Routern. Bei dem ersten Schritt ``Initially'' fällt der Knoten A aus. B bemerkt dies und bekommt beim ersten Austausch (exchange) von C einen Vektor mit der Distanz 2 zu A. Da bei jedem Update die Tabelle komplett überschrieben werden muss, übernimmt C von B die neue Route. Dies zieht sich auf allen verbliebenen Routern bis in die Unendlichkeit. Um dies abzukürzen und nicht zur höchsten vom Computer berechnbaren Zahl laufe zulassen, ist Unendlichkeit in den Protokollen definiert. Bei \ac{rip} wurde 16 gewählt. Dadurch können Routen maximal über 15 Router gehen. Es gibt mehrere Erweiterungen, die das Count-to-Infinity Problem lösen.
 
 % \subsubsection{Bellman-Ford Algorithmus}
 % Freddy
 \subsection{Link-State-Routing-Protokolle}
-Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen. 
-Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln. 
+Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen.
+Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln.
 Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt.
 
-Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die Router in seine Routing-Tabelle ein, mit denen er direkt verbunden ist. 
-Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt. 
-Das Kantengewicht kann zum Beispiel die Latenz zum Nachbar-Router sein. 
-Dies sichert, dass dem Router bekannt ist, zu welchem anderen Router er die qualitativ beste Verbindung hat. Nachdem jeder Router all seine Nachbar-Router erkannt hat und seine lokale Routing-Tabelle aufgebaut hat, schickt dieser Link-State-Pakete an seine Nachbar-Router. 
-Diese Link-State-Pakete enthalten alle Nachbar-Router des Routers und die Kantengewichte zu diesen, sowie eine fortlaufende Sequenznummer und einen Zähler für das Alter des Pakets. 
-Jeder Router empfängt die Link-State-Pakete seiner Nachbar-Router und leitet diese an all seine Nachbar-Router weiter, die diese Pakete noch nicht erhalten haben. 
-Durch die Link-State-Pakete erhält jeder Router mehr Information über die Topologie des Netzwerks. 
+Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die Router in seine Routing-Tabelle ein, mit denen er direkt verbunden ist.
+Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt.
+Das Kantengewicht kann zum Beispiel die Latenz zum Nachbar-Router sein.
+Dies sichert, dass dem Router bekannt ist, zu welchem anderen Router er die qualitativ beste Verbindung hat. Nachdem jeder Router all seine Nachbar-Router erkannt hat und seine lokale Routing-Tabelle aufgebaut hat, schickt dieser Link-State-Pakete an seine Nachbar-Router.
+Diese Link-State-Pakete enthalten alle Nachbar-Router des Routers und die Kantengewichte zu diesen, sowie eine fortlaufende Sequenznummer und einen Zähler für das Alter des Pakets.
+Jeder Router empfängt die Link-State-Pakete seiner Nachbar-Router und leitet diese an all seine Nachbar-Router weiter, die diese Pakete noch nicht erhalten haben.
+Durch die Link-State-Pakete erhält jeder Router mehr Information über die Topologie des Netzwerks.
 Die ankommenden Pakete werden von jedem Router in einem Paketpuffer verarbeitet.
 
-Bei dieser Verarbeitung spielen die zwei Zähler in den Link-State-Paketen eine wichtige Rolle zur Fehlererkennung. 
-Diese verhindern, dass ein Router veraltete Topologie-Informationen in seine Routing-Tabelle einträgt. Dies sichert der Router, indem er nur Pakete mit der aktuell höchsten Sequenznummer annimmt. 
-Pakete die zwar später eingetroffen sind, jedoch eine niedrigere Sequenznummer haben, werden als veraltet behandelt und verworfen. 
-Eine Problematik bei diesem Vorgehen ist allerdings, dass auch Fehler in der Sequenznummer auftauchen können. 
+Bei dieser Verarbeitung spielen die zwei Zähler in den Link-State-Paketen eine wichtige Rolle zur Fehlererkennung.
+Diese verhindern, dass ein Router veraltete Topologie-Informationen in seine Routing-Tabelle einträgt. Dies sichert der Router, indem er nur Pakete mit der aktuell höchsten Sequenznummer annimmt.
+Pakete die zwar später eingetroffen sind, jedoch eine niedrigere Sequenznummer haben, werden als veraltet behandelt und verworfen.
+Eine Problematik bei diesem Vorgehen ist allerdings, dass auch Fehler in der Sequenznummer auftauchen können.
 So führt ein \textit{1-bit} Fehler bei der Sequenznummer dazu, dass aus Sequenznummer 4 Sequenznummer 65540 wird.
 Somit würden die Sequenznummern 5 bis 65540 als veraltete verworfen werden, bis der Router wieder neue Informationen akzeptiert.
 Ein ähnliches Problem tritt auf, wenn ein Router abstürzt und mit der Sequenznummer 0 neu beginnt.
 Um diesen Problemen entegegen zu wirken, enthält das Paket auch jeweils einen Alterszähler.
-Dieser wird zu Beginn auf eine vordefinierte \ac{ttl} eingestellt und beispielsweise jede Sekunde um 1 dekrementiert. 
+Dieser wird zu Beginn auf eine vordefinierte \ac{ttl} eingestellt und beispielsweise jede Sekunde um 1 dekrementiert.
 Erreicht der Alterszähler den Wert 0, wird das Paket verworfen.
 
 Nachdem ein Paket als aktuell eingestuft wurde, wird es auf allen Leitungen, ausgenommen der Leitung auf der es empfangen wurde, weitergeleitet.
@@ -162,24 +169,24 @@ linenos
 def Dijkstra(Graph, source):
 
   create vertex set Q
-  
+
   for each vertex v in Graph:       // Initialization
     dist[v] = INFINITY              // Unknown distance from source to v
     prev[v] = UNDEFINED             // Previous node in optimal path from source
     add v to Q                      // All nodes initially in Q (unvisited nodes)
 
-  dist[source] = 0                  // Distance from source to source      
+  dist[source] = 0                  // Distance from source to source
 
   while Q is not empty:
     u = vertex in Q with min dist[u] // Source node will be selected first
-    remove u from Q 
+    remove u from Q
 
     for each neighbor v of u:        // where v is still in Q.
       alt = dist[u] + length(u, v)
       if alt < dist[v]:              // A shorter path to v has been found
-        dist[v] = alt 
-        prev[v] = u 
-        
+        dist[v] = alt
+        prev[v] = u
+
   return dist[], prev[]
 \end{minted}
 
