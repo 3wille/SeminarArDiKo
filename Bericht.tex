@@ -100,12 +100,18 @@ Ein Rechner ist dabei immer an mindestens einem Router über ein Layer-2-Netz an
 % Freddy
 Die Klasse der Distance-Vector-Protokolle setzen den Bellman-Ford-Algorithmus um. Dazu werden periodisch Arrays, auch Vektoren genannt, zu den direkten Nachbarroutern verschickt. Jeder dieser Vektoren enthält die eigenen Distanzen zu allen Zielen, die der Router zum Zeitpunkt des Sendens kennt. Dieser Distanz-Vektor gibt der Protokollklasse ihren Namen. \\
 Zu Beginn erkennt jeder Router seine direkten Nachbarn und ermittelt die Distanz zu diesem. Aus den direkten Nachbarn wird dann ein Vektor gebildet, der dann an alle Nachbarn geschickt wird. Nun empfangen alle Router von ihren Nachbarn eine Reihe an Vektoren, aus denen eine Routing Tabelle gebaut werden muss. Dafür wird pro aktuell bekanntem Ziel der minimale Eintrag aller empfangener Vektoren bestimmt und als neue Distanz in die Routing Tabelle aufgenommen. Dazu wird die Adresse des Routers, von dem die Information stammt und der dazugehörige physikalische Port vermerkt. Die Herkunft wird nur lokal zum Forwarding benötigt und wird somit nicht im Vektor mitgeschickt.\\
-Es werden nach und nach Routen zu allen Zielen bekannt und sie konvergieren über die Zeit gegen die beste Route. Die benötigte kann je nach gewählter Update-Rate sehr hoch sein. Bei \ac{rip} als Beispiel wird nur alle 30 Sekunden ein Vektor verschickt. Dies führt dazu, dass bei nur 4 Routern, die in Reihe verbunden sind, bereits eine Minute für  die drei Updates benötigt wird\footnote{bei den Zeitpunkten 0s, 30s, 60s}. \\
-Sobald ein Router ausfällt ensteht das Count-to-infinity Problem. 
-% count to infinity
+Es werden nach und nach Routen zu allen Zielen bekannt und sie konvergieren über die Zeit gegen die beste Route. Gezeigt wird dies in Abbildung 1a. Die benötigte kann je nach gewählter Update-Rate sehr hoch sein. Bei \ac{rip} als Beispiel wird nur alle 30 Sekunden ein Vektor verschickt. Dies führt dazu, dass bei nur 4 Routern, die in Reihe verbunden sind, bereits eine Minute für  die drei Updates benötigt wird\footnote{bei den Zeitpunkten 0s, 30s, 60s}.\\
+Sobald ein Router ausfällt ensteht das Count-to-infinity Problem. Dabei bekommt der Nachbar des ausgefallenen Routers, eine neue Router von anderen Nachbarn, erkennt jedoch nicht, dass die Route von ihm selbst kommt.\\
+\begin{figure}[h]
+\includegraphics[width=1.0\textwidth]{images/count_to_inf.png}
+\caption[count to inf]{Count to Infinity Problem\footnotemark}
+\label{count_to_inf}
+\end{figure}
+\footnotetext{AndrewS.Tanenbaum2010} \\
+Abbildung~\ref{count_to_inf}b zeigt das Count to Infinity Problem bei 5 in Reihe geschalteten Routern. Bei dem ersten Schritt ``Initially'' fällt der Knoten A aus. B bemerkt dies und bekommt beim ersten Austausch (exchange) von C einen Vektor mit der Distanz 2 zu A. Da bei jedem Update die Tabelle komplett überschrieben werden muss, übernimmt C von B die neue Route. Dies zieht sich auf allen verbliebenen Routern bis in die Unendlichkeit. Um dies abzukürzen und nicht zur höchsten vom Computer berechnbaren Zahl laufe zulassen, ist Unendlichkeit in den Protokollen definiert. Bei \ac{rip} wurde 16 gewählt. Dadurch können Routen maximal über 15 Router gehen. Es gibt mehrere Erweiterungen, die das Count-to-Infinity Problem lösen.
 
-\subsubsection{Bellman-Ford Algorithmus}
-Freddy
+% \subsubsection{Bellman-Ford Algorithmus}
+% Freddy
 \subsection{Link-State-Routing-Protokolle}
 Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen. 
 Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln. 
