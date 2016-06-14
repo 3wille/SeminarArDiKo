@@ -74,6 +74,10 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 		\acro{ttl}[TTL]{Time to live}
 		\acro{ack}[ACK]{Acknowledgement}
 		\acro{lsdb}[LSDB]{Link-State Database}
+		\acro{ir}[IR]{Internal Router}
+		\acro{abr}[ABR]{Area Border Router}
+		\acro{br}[BR]{Backbone Router}
+		\acro{asbr}[ASBR]{Autonomous system boundary router}
 \end{acronym}
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -195,8 +199,8 @@ def Dijkstra(Graph, source):
 \ac{ospf} \ac{ospf}
 \subsection{Areas}
 Ein \ac{ospf} Netzwerk ist häufig in sogenannte Areas aufgeteilt.
-Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt. 
-Somit ist der interne Aufbau einer Area nach Außen hin unbekannt. 
+Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt.
+Somit ist der interne Aufbau einer Area nach Außen hin unbekannt.
 Jede Area ist durch einen \textit{32-bit} Integer eindeutig beschrieben, der entweder als Dezimalzahl oder in Dezimalpunktschreibweise angegeben wird.
 Areas sind untereinander durch einzelne Router verbunden, die an den Grenzen zwischen zwei Areas stehen, also mit beiden Areas verbunden sind.
 \subsubsection{Backbone Area}
@@ -206,8 +210,8 @@ Bei Ausfall eines oder mehrere Router, darf die Backbone Area nicht in mehrere T
 Die Hauptaufgabe der Backbone Area besteht darin, Routing-Informationen zwischen nicht-Backbone Areas zu verteilen.
 \subsubsection{Nicht-Backbone Area}
 Alle an die Backbone Area angeschlossenen Areas werden nicht-Backbone Areas genannt.
-Diese bestehen aus mehreren Routern, die jeweils Topologie-Informationen für ihre Area in ihrer \ac{lsdb} speichern. 
-Die \ac{lsdb} ist innerhalb einer Area synchronisiert. 
+Diese bestehen aus mehreren Routern, die jeweils Topologie-Informationen für ihre Area in ihrer \ac{lsdb} speichern.
+Die \ac{lsdb} ist innerhalb einer Area synchronisiert.
 \subsubsection{Stub Area}
 Eine Stub Area zeichnet sich dadurch aus, dass sie keine externen Routenempfehlungen durch die Backbone Area erhält.
 Weiter ist das interne Routing über Defaultrouten geregelt. Diese werden durch den mit der Backbone Area verbundenen Router verteilt, der sich selbst als Standardgateway setzt.
@@ -215,7 +219,12 @@ Weiter ist das interne Routing über Defaultrouten geregelt. Diese werden durch 
 Transit Areas sind Areas, die sowohl direkt mit der Backbone Area verbunden sind, als auch mit einer nicht-Backbone Area, die selbst nicht mit der Backbone Area verbunden ist.
 Da aber jede nicht-Backbone Area mit der Backbone Area verbunden sein muss, wird ein Virtual Link zur Backbone Area erstellt, der physikalisch durch die dazwischen liegende Area führt.
 Diese Area bezeichnet man als Transit Area.
+
 \subsection{Router Typen}
+% Freddy
+Auf den Areas basierent werden Router in vier Typen eingeteilt. Router, die sich nur in einer Area befinden heißen \ac{ir}. Die Verbindung zwischen zwei Areas stellen die \ac{abr} her. Diese Router haben für jede Area in der sie sich befinden eine \ac{lsdb}. Die Backbone Area ist aus Backbone Routern aufgebaut. Die \ac{asbr} sind Gateways zu anderen Netzen, welche meist auch andere \ac{as} sind. Als Beispiel kann ein \ac{asbr} auch an ein weiteres \ac{ospf} oder ein \ac{rip} Netz angeschlossen sein.
+
+Jeder Router kann mehrere Typen haben. So sind Router, die das Backbone mit einer anderen Area verbinden, gleichzeitig \ac{abr}s und Backbone Router.
 \subsection{Metriken}
 \subsection{OSPF v2}
 %julian
