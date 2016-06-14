@@ -194,17 +194,19 @@ def Dijkstra(Graph, source):
 \ac{ospf} \ac{ospf}
 \subsection{Areas}
 Ein \ac{ospf} Netzwerk ist häufig in sogenannte Areas aufgeteilt.
-Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt. Somit ist der interne Aufbau einer Area nach Außen hin unbekannt. Jede Area ist durch einen \textit{32-bit} Integer eindeutig beschrieben, der entweder als Dezimalzahl oder in Dezimalpunktschreibweise angegeben wird.
+Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt. Somit ist der interne Aufbau einer Area nach Außen hin unbekannt. Jede Area ist durch einen \textit{32-bit} Integer eindeutig beschrieben, der entweder als Dezimalzahl oder in Dezimalpunktschreibweise angegeben wird. Areas sind untereinander durch einzelne Router verbunden, die an den Grenzen zwischen zwei Areas stehen, also mit beiden Areas verbunden sind.
 \subsubsection{Backbone Area}
-Die Backbone Area ist die Area mit der Adresse 0 bzw. 0.0.0.0.
-Jede andere Area muss eine direkte Verbindung zur Backbone Area haben. 
+Die Area mit der Adresse 0 bzw. 0.0.0.0 wird Backbone Area genannt.
+Jede andere Area muss eine direkte Verbindung zur Backbone Area haben. Bei Ausfall eines oder mehrere Router, darf die Backbone Area nicht in mehrere Teile aufgeteilt werden. 
 \subsubsection{Regular Area}
 \subsubsection{Stub Area}
 \subsubsection{Transit Area} 
 \subsection{Router Typen}
 \subsection{Metriken}
 \subsection{OSPF v2}
+%julian
 \subsection{OSPF v3}
+%julian
 \section{Fazit/Ausblick}
 Julian
 
