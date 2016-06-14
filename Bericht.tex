@@ -129,7 +129,7 @@ Abbildung~\ref{count_to_inf}b zeigt das Count to Infinity Problem bei 5 in Reihe
 \subsection{Link-State-Routing-Protokolle}
 Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen.
 Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln.
-Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt.
+Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt. \cite{weLSRP}
 
 Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die Router in seine Routing-Tabelle ein, mit denen er direkt verbunden ist.
 Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt.
@@ -149,12 +149,12 @@ Somit würden die Sequenznummern 5 bis 65540 als veraltete verworfen werden, bis
 Ein ähnliches Problem tritt auf, wenn ein Router abstürzt und mit der Sequenznummer 0 neu beginnt.
 Um diesen Problemen entegegen zu wirken, enthält das Paket auch jeweils einen Alterszähler.
 Dieser wird zu Beginn auf eine vordefinierte \ac{ttl} eingestellt und beispielsweise jede Sekunde um 1 dekrementiert.
-Erreicht der Alterszähler den Wert 0, wird das Paket verworfen.
+Erreicht der Alterszähler den Wert 0, wird das Paket verworfen. \cite{AndrewS.Tanenbaum2010}
 
 Nachdem ein Paket als aktuell eingestuft wurde, wird es auf allen Leitungen, ausgenommen der Leitung auf der es empfangen wurde, weitergeleitet.
 Hierfür pflegt der Router innerhalb des Paketpuffers Send und \ac{ack} Flags für jeden Knoten.
 Erreicht den Router ein Paket eines anderen Routers über nur eine Leitung, so wird das Send Flag bei allen anderen Leitungen gesetzt und das \ac{ack} Flag bei der Leitung gesetzt, von der das Paket kam.
-Erreicht ein Paket eines anderen Routers den Router aber über zwei oder mehr unterschiedliche Leitungen, so wird auf all diesen Leitungen das \ac{ack} Flag gesetzt und das Send Flag auf den verbleibenden Leitungen.
+Erreicht ein Paket eines anderen Routers den Router aber über zwei oder mehr unterschiedliche Leitungen, so wird auf all diesen Leitungen das \ac{ack} Flag gesetzt und das Send Flag auf den verbleibenden Leitungen. \cite{AndrewS.Tanenbaum2010}
 
 Angeschlossen an das Befüllen der Routing-Tabelle des Routers beginnt jeder Router für sich die besten Routen durch das Netzwerk zu jedem anderen Router zu berechnen.
 Hierzu nutzen Link-State-Routing Protokolle den Dijkstra-Algorithmus.
