@@ -5,18 +5,18 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage[backend=biber]{biblatex}
+\usepackage{natbib}
 \usepackage{gensymb}
 \usepackage{graphicx}
 \usepackage[onehalfspacing]{setspace}
 \usepackage{url}
 \usepackage{acronym}
 \usepackage{minted}
+\usepackage{float}
 %\usepackage{geometry}
-%\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=30mm,rmargin=30mm}
-\addbibresource{Bericht.bib}
-%\bibliographystyle{te}
-\bibliography{Bericht.bib}
+%\geometry{verbose,a4paper,tmargin=30mm,bmargin=30mm,lmargin=40mm,rmargin=40mm}
+%\addbibresource{Bericht.bib}
+
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}
 
@@ -62,6 +62,9 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 \thispagestyle{empty}
 \tableofcontents
 \newpage
+\listoffigures
+\thispagestyle{empty}
+\newpage
 \thispagestyle{empty}
 \section*{Abkürzungen}
 \begin{acronym}
@@ -92,9 +95,6 @@ ABSTRACT
 % Freddy
 % Layer 3
 % routing vs forwarding
-
-
-
 \section{Routing Protokolle}
 \subsection{IGP und EGP}
 % Freddy
@@ -202,6 +202,12 @@ def Dijkstra(Graph, source):
 \subsection{Areas}
 Ein \ac{ospf} Netzwerk ist häufig in sogenannte Areas aufgeteilt.
 Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt.
+\begin{figure}[H]
+\includegraphics[width=1.0\textwidth]{images/ospfarea.png}
+\caption[OSPF Areas]{OSPF Areas\footnotemark}
+\label{fig:ospf-area}
+\end{figure}
+\footnotetext{Quelle: \cite{ospfDesign}}
 Somit ist der interne Aufbau einer Area nach Außen hin unbekannt.
 Jede Area ist durch einen \textit{32-bit} Integer eindeutig beschrieben, der entweder als Dezimalzahl oder in Dezimalpunktschreibweise angegeben wird.
 Areas sind untereinander durch einzelne Router verbunden, die an den Grenzen zwischen zwei Areas stehen, also mit beiden Areas verbunden sind.
@@ -219,8 +225,16 @@ Eine Stub Area zeichnet sich dadurch aus, dass sie keine externen Routenempfehlu
 Weiter ist das interne Routing über Defaultrouten geregelt. Diese werden durch den mit der Backbone Area verbundenen Router verteilt, der sich selbst als Standardgateway setzt.
 \subsubsection{Transit Area}
 Transit Areas sind Areas, die sowohl direkt mit der Backbone Area verbunden sind, als auch mit einer nicht-Backbone Area, die selbst nicht mit der Backbone Area verbunden ist.
+\begin{figure}[H]
+\includegraphics[width=1.0\textwidth]{images/virtuallink.png}
+\caption[OSPF Virtual Link]{Virtual Link\footnotemark}
+\label{fig:virtual-link}
+\end{figure}
+\footnotetext{Quelle: \cite{ospf}}
 Da aber jede nicht-Backbone Area mit der Backbone Area verbunden sein muss, wird ein Virtual Link zur Backbone Area erstellt, der physikalisch durch die dazwischen liegende Area führt.
 Diese Area bezeichnet man als Transit Area.
+In Abbildung \ref{fig:virtual-link} sieht man einen solchen Virtual Link zwischen Area 7 und der Backbone Area 0 über die Transit Area 5.
+
 
 \subsection{Router Typen}
 % Freddy
@@ -240,6 +254,10 @@ Jeder Router kann mehrere Typen haben. So sind Router, die das Backbone mit eine
 Julian
 
 \clearpage
-\nocite{*}
-\printbibliography
+%\nocite{*}
+\bibliography{Bericht}
+\bibliographystyle{dinat}
+%\printbibliography
+
+
 \end{document}
