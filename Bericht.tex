@@ -196,6 +196,8 @@ def Dijkstra(Graph, source):
 Ein \ac{ospf} Netzwerk ist häufig in sogenannte Areas aufgeteilt.
 Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt. Somit ist der interne Aufbau einer Area nach Außen hin unbekannt. Jede Area ist durch einen \textit{32-bit} Integer eindeutig beschrieben, der entweder als Dezimalzahl oder in Dezimalpunktschreibweise angegeben wird.
 \subsubsection{Backbone Area}
+Die Backbone Area ist die Area mit der Adresse 0 bzw. 0.0.0.0.
+Jede andere Area muss eine direkte Verbindung zur Backbone Area haben. 
 \subsubsection{Regular Area}
 \subsubsection{Stub Area}
 \subsubsection{Transit Area} 
