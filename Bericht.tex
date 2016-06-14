@@ -193,8 +193,16 @@ def Dijkstra(Graph, source):
 \section{Open Shortest Path First}
 \ac{ospf} \ac{ospf}
 \subsection{Areas}
+Ein \ac{ospf} Netzwerk ist häufig in sogenannte Areas aufgeteilt.
+Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt. Somit ist der interne Aufbau einer Area nach Außen hin unbekannt. Jede Area ist durch einen \textit{32-bit} Integer eindeutig beschrieben, der entweder als Dezimalzahl oder in Dezimalpunktschreibweise angegeben wird.
+\subsubsection{Backbone Area}
+\subsubsection{Regular Area}
+\subsubsection{Stub Area}
+\subsubsection{Transit Area} 
 \subsection{Router Typen}
 \subsection{Metriken}
+\subsection{OSPF v2}
+\subsection{OSPF v3}
 \section{Fazit/Ausblick}
 Julian
 
