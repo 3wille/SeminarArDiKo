@@ -1,4 +1,4 @@
-\documentclass[1pt,a4paper,final]{article}
+\documentclass[11pt,a4paper,final]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[german]{babel}
 \usepackage[T1]{fontenc}
@@ -73,6 +73,7 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 		\acro{rip}[RIP]{Routing Information Protocol}
 		\acro{ttl}[TTL]{Time to live}
 		\acro{ack}[ACK]{Acknowledgement}
+		\acro{lsdb}[LSDB]{Link-State Database}
 \end{acronym}
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -157,7 +158,7 @@ Der Dijkstra-Algorithmus ist ein nach seinem Erfinder Edsgar W. Dijkstra benannt
 Zu Beginn werden allen Knoten des Graphens die Merkmale Distanz und Vorgänger zugewiesen. Hierbei erhält der Starknoten für die Distanz den wert $0$, die restlichen Knoten den Wert $\infty$.
 Für jeden unbesuchten Knoten wird der, mit der kürzesten Distanz ausgewählt und als besucht markiert.
 Zusätzlich werden für alle Nachbarknoten die Distanzen auf die Summe aus dem Distanzwert des aktuellen Knotens und dem Kantengewicht zum Nachbarknoten gesetzt.
-Ergibt sich aus dem vorherigen Schritt eine niedrigere Distanz als in dem Nachbarknoten gespeichert ist, wird diese mit der niedrigeren ersetzt und der aktuelle Knoten als Vorgänger gesetzt.\\
+Ergibt sich aus dem vorherigen Schritt eine niedrigere Distanz als in dem Nachbarknoten gespeichert ist, wird diese mit der niedrigeren ersetzt und der aktuelle Knoten als Vorgänger gesetzt.\\\\
 \begin{minted}[
 frame=lines,
 framesep=3mm,
@@ -194,13 +195,26 @@ def Dijkstra(Graph, source):
 \ac{ospf} \ac{ospf}
 \subsection{Areas}
 Ein \ac{ospf} Netzwerk ist häufig in sogenannte Areas aufgeteilt.
-Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt. Somit ist der interne Aufbau einer Area nach Außen hin unbekannt. Jede Area ist durch einen \textit{32-bit} Integer eindeutig beschrieben, der entweder als Dezimalzahl oder in Dezimalpunktschreibweise angegeben wird. Areas sind untereinander durch einzelne Router verbunden, die an den Grenzen zwischen zwei Areas stehen, also mit beiden Areas verbunden sind.
+Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt. 
+Somit ist der interne Aufbau einer Area nach Außen hin unbekannt. 
+Jede Area ist durch einen \textit{32-bit} Integer eindeutig beschrieben, der entweder als Dezimalzahl oder in Dezimalpunktschreibweise angegeben wird.
+Areas sind untereinander durch einzelne Router verbunden, die an den Grenzen zwischen zwei Areas stehen, also mit beiden Areas verbunden sind.
 \subsubsection{Backbone Area}
 Die Area mit der Adresse 0 bzw. 0.0.0.0 wird Backbone Area genannt.
-Jede andere Area muss eine direkte Verbindung zur Backbone Area haben. Bei Ausfall eines oder mehrere Router, darf die Backbone Area nicht in mehrere Teile aufgeteilt werden. 
-\subsubsection{Regular Area}
+Jede andere Area muss eine direkte Verbindung zur Backbone Area haben.
+Bei Ausfall eines oder mehrere Router, darf die Backbone Area nicht in mehrere Teile aufgeteilt werden.
+Die Hauptaufgabe der Backbone Area besteht darin, Routing-Informationen zwischen nicht-Backbone Areas zu verteilen.
+\subsubsection{Nicht-Backbone Area}
+Alle an die Backbone Area angeschlossenen Areas werden nicht-Backbone Areas genannt.
+Diese bestehen aus mehreren Routern, die jeweils Topologie-Informationen für ihre Area in ihrer \ac{lsdb} speichern. 
+Die \ac{lsdb} ist innerhalb einer Area synchronisiert. 
 \subsubsection{Stub Area}
-\subsubsection{Transit Area} 
+Eine Stub Area zeichnet sich dadurch aus, dass sie keine externen Routenempfehlungen durch die Backbone Area erhält.
+Weiter ist das interne Routing über Defaultrouten geregelt. Diese werden durch den mit der Backbone Area verbundenen Router verteilt, der sich selbst als Standardgateway setzt.
+\subsubsection{Transit Area}
+Transit Areas sind Areas, die sowohl direkt mit der Backbone Area verbunden sind, als auch mit einer nicht-Backbone Area, die selbst nicht mit der Backbone Area verbunden ist.
+Da aber jede nicht-Backbone Area mit der Backbone Area verbunden sein muss, wird ein Virtual Link zur Backbone Area erstellt, der physikalisch durch die dazwischen liegende Area führt.
+Diese Area bezeichnet man als Transit Area.
 \subsection{Router Typen}
 \subsection{Metriken}
 \subsection{OSPF v2}
