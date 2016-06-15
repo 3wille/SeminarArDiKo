@@ -82,6 +82,8 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 		\acro{abr}[ABR]{Area Border Router}
 		\acro{br}[BR]{Backbone Router}
 		\acro{asbr}[ASBR]{Autonomous system boundary router}
+		\acro{ietf}[IETF]{Internet Engineering Task Force}
+		\acro{rfc}[RFC]{Request for Comments}
 \end{acronym}
 \newpage
 \setcounter{page}{1}
@@ -103,18 +105,19 @@ Im globalem Internet werden, im Bezug auf die Beziehung zweier kommunizierenden 
 Die ansonsten getrennten Netze werden durch ein oder mehrere Gateways verbunden. Gateways sind Router, die zwei Netze über ein \ac{egp} verbinden. Über das \ac{egp} werden Routen zu den eigenen und auch anderen Netzen ausgetauscht. Im Internet sind Netze als Autonome Systeme organisiert, die \ac{bgp} als \ac{egp} nutzen.
 
 Innerhalb eines Netzes müssen Routen von jedem Rechner zu jedem anderen Rechner gefunden werden. Über ein \ac{igp} tauschen die Router des Netzes die von ihnen erreichbaren Rechner aus.
-Ein Rechner ist dabei immer an mindestens einem Router über ein Layer-2-Netz angebunden, das heißt mehrere Rechner können über Switches und Hubs an einen Port des Routers angeschlossen sein.
+Ein Rechner ist dabei immer an mindestens einem Router über ein Layer-2-Netz angebunden, das heißt, mehrere Rechner können über Switches und Hubs an einen Port des Routers angeschlossen sein.
 
 \ac{igp}s werden in zwei Klassen unterteilt, Distance-Vector- und Link-State-Protokolle.
 \subsection{Distance-Vector-Routing-Protokolle}
 % Freddy
-Die Klasse der Distance-Vector-Protokolle setzen den Bellman-Ford-Algorithmus um. Dazu werden periodisch Arrays, auch Vektoren genannt, zu den direkten Nachbarroutern verschickt. Jeder dieser Vektoren enthält die eigenen Distanzen zu allen Zielen, die der Router zum Zeitpunkt des Sendens kennt. Dieser Distanz-Vektor gibt der Protokollklasse ihren Namen.
+Die Klasse der Distance-Vector-Protokolle setzt den Bellman-Ford-Algorithmus um. Dazu werden periodisch Arrays, auch Vektoren genannt, zu den direkten Nachbarroutern verschickt. Jeder dieser Vektoren enthält die eigenen Distanzen zu allen Zielen, die der Router zum Zeitpunkt des Sendens kennt. Dieser Distanz-Vektor gibt der Protokollklasse ihren Namen.
 
-Zu Beginn erkennt jeder Router seine direkten Nachbarn und ermittelt die Distanz zu diesem. Aus den direkten Nachbarn wird dann ein Vektor gebildet, der dann an genau diese Nachbarn geschickt wird. Nun empfangen alle Router von ihren Nachbarn eine Reihe an Vektoren, aus denen eine Routing Tabelle gebaut werden muss. Dafür wird pro aktuell bekanntem Ziel der minimale Eintrag aller empfangener Vektoren bestimmt und als neue Distanz in die Routing Tabelle aufgenommen. Dazu wird die Adresse des Routers, von dem die Information stammt und der dazugehörige physikalische Port vermerkt. Die Herkunft wird nur lokal zum Forwarding benötigt und wird somit nicht im Vektor mitgeschickt.
+Zu Beginn erkennt jeder Router seine direkten Nachbarn und ermittelt die Distanz zu diesem. Aus den direkten Nachbarn wird dann ein Vektor gebildet, der dann an genau diese Nachbarn geschickt wird. Nun empfangen alle Router von ihren Nachbarn eine Reihe an Vektoren, aus denen eine Routing Tabelle berechnet werden muss. Dafür wird pro aktuell bekanntem Ziel der minimale Eintrag aller empfangener Vektoren bestimmt und als neue Distanz in die Routing Tabelle aufgenommen. Dazu wird die Adresse des Routers, von dem die Information stammt und der dazugehörige physikalische Port vermerkt. Die Herkunft wird nur lokal zum Forwarding benötigt und wird somit nicht im Vektor mitgeschickt.
 
 Der Vorgang wird periodisch wiederholt, sodass nach und nach Routen zu allen Zielen bekannt werden. Die Tabellen der Router konvergieren über die Zeit gegen die besten Routen. Gezeigt wird dies in Abbildung~\ref{count_to_inf}a. Die benötigte Zeit kann je nach gewählter Update-Rate sehr hoch sein. Bei \ac{rip} als Beispiel wird nur alle 30 Sekunden ein Vektor verschickt. Dies führt dazu, dass bei nur 4 Routern, die in Reihe verbunden sind, bereits eine Minute für  die drei Updates\footnote{bei den Zeitpunkten 0s, 30s, 60s} benötigt wird.
 
-Sobald ein Router ausfällt ensteht das Count-to-infinity Problem. Dabei bekommt der Nachbar des ausgefallenen Routers, eine neue Router von anderen Nachbarn, erkennt jedoch nicht, dass die Route von ihm selbst kommt.
+Sobald ein Router ausfällt ensteht das Count-to-infinity Problem.
+Dabei bekommt der Nachbar des ausgefallenen Routers eine neue Router von anderen Nachbarn, erkennt jedoch nicht, dass die Route von ihm selbst kommt.
 
 \begin{figure}[h]
 \includegraphics[width=1.0\textwidth]{images/count_to_inf.png}
@@ -127,7 +130,7 @@ Abbildung~\ref{count_to_inf}b zeigt das Count to Infinity Problem bei 5 in Reihe
 % \subsubsection{Bellman-Ford Algorithmus}
 % Freddy
 \subsection{Link-State-Routing-Protokolle}
-Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen, über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen.
+Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen.
 Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln.
 Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt. \cite{weLSRP}
 
@@ -198,7 +201,12 @@ def Dijkstra(Graph, source):
 \end{minted}
 
 \section{Open Shortest Path First}
-\ac{ospf} \ac{ospf}
+\ac{ospf} ist das aktuell weit verbreiteste Routing Protokoll im Internet.
+Es gehört zu den Link-State Protokollen und nutzt den Dijkstra's Algorithmus.
+Das Protokoll wurde von der \ac{ietf} mittels \ac{rfc} entwickelt und ist ohne Lizenz nutzbar.
+\ac{ospf} wurde 1987 konzeptioniert und ist seit 1989 als \ac{rfc} 1131\footnote{https://tools.ietf.org/html/rfc1131} festgehalten.
+In den \ac{rfc}s 3270\footnote{https://tools.ietf.org/html/rfc3270} und 5187\footnote{https://tools.ietf.org/html/rfc5187} wurden die Versionen 2 und 3 des Prokolls jeweils final beschrieben.
+
 \subsection{Areas}
 Ein \ac{ospf} Netzwerk ist häufig in sogenannte Areas aufgeteilt.
 Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt.
