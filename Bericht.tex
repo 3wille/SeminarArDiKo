@@ -82,6 +82,8 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 		\acro{abr}[ABR]{Area Border Router}
 		\acro{br}[BR]{Backbone Router}
 		\acro{asbr}[ASBR]{Autonomous system boundary router}
+		\acro{ipv6}[IPv6]{Internet Protocol Version 6}
+		\acro{lsa}[LSA]{Link State Advertisements}
 		\acro{ietf}[IETF]{Internet Engineering Task Force}
 		\acro{rfc}[RFC]{Request for Comments}
 \end{acronym}
@@ -132,7 +134,7 @@ Abbildung~\ref{count_to_inf}b zeigt das Count to Infinity Problem bei 5 in Reihe
 \subsection{Link-State-Routing-Protokolle}
 Link-State-Routing-Protokolle sind eine Klasse von Routing-Protokollen, die sich dadurch auszeichnen, dass sie ihre Informationen über die verfügbaren Routen in ihrem Netzwerk, mit all ihren Nachbarn teilen.
 Im Gegensatz zu Distance-Vector-Routing-Protokollen senden sie mehrere kleine Aktualisierungen, die jeweils vollständige Routen zu andern Knoten des Netzwerks enthalten, anstatt nur Informationen über direkte Verbindungen zu ihren Nachbarknoten zu übermitteln.
-Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt. \cite{weLSRP}
+Diese Informationen speichert jeder Knoten oder auch Router in einer lokalen Routing-Tabelle, die er wie folgt befüllt. \citep{weLSRP}
 
 Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die Router in seine Routing-Tabelle ein, mit denen er direkt verbunden ist.
 Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt.
@@ -152,19 +154,19 @@ Somit würden die Sequenznummern 5 bis 65540 als veraltete verworfen werden, bis
 Ein ähnliches Problem tritt auf, wenn ein Router abstürzt und mit der Sequenznummer 0 neu beginnt.
 Um diesen Problemen entegegen zu wirken, enthält das Paket auch jeweils einen Alterszähler.
 Dieser wird zu Beginn auf eine vordefinierte \ac{ttl} eingestellt und beispielsweise jede Sekunde um 1 dekrementiert.
-Erreicht der Alterszähler den Wert 0, wird das Paket verworfen. \cite{AndrewS.Tanenbaum2010}
+Erreicht der Alterszähler den Wert 0, wird das Paket verworfen. \citep{AndrewS.Tanenbaum2010}
 
 Nachdem ein Paket als aktuell eingestuft wurde, wird es auf allen Leitungen, ausgenommen der Leitung auf der es empfangen wurde, weitergeleitet.
 Hierfür pflegt der Router innerhalb des Paketpuffers Send und \ac{ack} Flags für jeden Knoten.
 Erreicht den Router ein Paket eines anderen Routers über nur eine Leitung, so wird das Send Flag bei allen anderen Leitungen gesetzt und das \ac{ack} Flag bei der Leitung gesetzt, von der das Paket kam.
-Erreicht ein Paket eines anderen Routers den Router aber über zwei oder mehr unterschiedliche Leitungen, so wird auf all diesen Leitungen das \ac{ack} Flag gesetzt und das Send Flag auf den verbleibenden Leitungen. \cite{AndrewS.Tanenbaum2010}
+Erreicht ein Paket eines anderen Routers den Router aber über zwei oder mehr unterschiedliche Leitungen, so wird auf all diesen Leitungen das \ac{ack} Flag gesetzt und das Send Flag auf den verbleibenden Leitungen. \citep{AndrewS.Tanenbaum2010}
 
 Angeschlossen an das Befüllen der Routing-Tabelle des Routers beginnt jeder Router für sich die besten Routen durch das Netzwerk zu jedem anderen Router zu berechnen.
 Hierzu nutzen Link-State-Routing Protokolle den Dijkstra-Algorithmus.
 \subsubsection{Dijkstra-Algorithmus}
-Der Dijkstra-Algorithmus ist ein nach seinem Erfinder Edsgar W. Dijkstra benannter Algorithmus, der in einem Graphen zu einem gegebenen Starknoten den kürzesten Pfad zu allen anderen Knoten basierend auf Kantengewichten ermittelt.
+Der Dijkstra-Algorithmus ist ein nach seinem Erfinder Edsgar W. Dijkstra benannter Algorithmus, der in einem Graphen zu einem gegebenen Startknoten den kürzesten Pfad zu allen anderen Knoten basierend auf Kantengewichten ermittelt.
 
-Zu Beginn werden allen Knoten des Graphens die Merkmale Distanz und Vorgänger zugewiesen. Hierbei erhält der Starknoten für die Distanz den wert $0$, die restlichen Knoten den Wert $\infty$.
+Zu Beginn werden allen Knoten des Graphens die Merkmale Distanz und Vorgänger zugewiesen. Hierbei erhält der Startknoten für die Distanz den wert $0$, die restlichen Knoten den Wert $\infty$.
 Für jeden unbesuchten Knoten wird der, mit der kürzesten Distanz ausgewählt und als besucht markiert.
 Zusätzlich werden für alle Nachbarknoten die Distanzen auf die Summe aus dem Distanzwert des aktuellen Knotens und dem Kantengewicht zum Nachbarknoten gesetzt.
 Ergibt sich aus dem vorherigen Schritt eine niedrigere Distanz als in dem Nachbarknoten gespeichert ist, wird diese mit der niedrigeren ersetzt und der aktuelle Knoten als Vorgänger gesetzt.\\\\
@@ -215,7 +217,7 @@ Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von groß
 \caption[OSPF Areas]{OSPF Areas\footnotemark}
 \label{fig:ospf-area}
 \end{figure}
-\footnotetext{Quelle: \cite{ospfDesign}}
+\footnotetext{\citep[Quelle:][]{ospfDesign}}
 Somit ist der interne Aufbau einer Area nach Außen hin unbekannt.
 Jede Area ist durch einen \textit{32-bit} Integer eindeutig beschrieben, der entweder als Dezimalzahl oder in Dezimalpunktschreibweise angegeben wird.
 Areas sind untereinander durch einzelne Router verbunden, die an den Grenzen zwischen zwei Areas stehen, also mit beiden Areas verbunden sind.
@@ -238,7 +240,7 @@ Transit Areas sind Areas, die sowohl direkt mit der Backbone Area verbunden sind
 \caption[OSPF Virtual Link]{Virtual Link\footnotemark}
 \label{fig:virtual-link}
 \end{figure}
-\footnotetext{Quelle: \cite{ospf}}
+\footnotetext{\cite[Quelle:][]{ospf}}
 Da aber jede nicht-Backbone Area mit der Backbone Area verbunden sein muss, wird ein Virtual Link zur Backbone Area erstellt, der physikalisch durch die dazwischen liegende Area führt.
 Diese Area bezeichnet man als Transit Area.
 In Abbildung \ref{fig:virtual-link} sieht man einen solchen Virtual Link zwischen Area 7 und der Backbone Area 0 über die Transit Area 5.
@@ -267,7 +269,9 @@ Die Formeln beziehungsweise die Referenzwerte sollten innerhalb einer Area, bess
 Haben zwei Pfade die selbe Metrik, führt \ac{osfp} automatisch Load-Balancing durch.
 Dazu werden Pakete im round-robin Verfahren auf alle Pfade mit der selben Metrik verteilt.
 \subsection{OSPF v3}
+Mit der Einführung von \ac{ipv6} musste das \ac{ospf}-Protokoll in einigen Bereichen geändert werden. Dies betrifft vor allem die Teile des Protokolls, die mit Adressierung zu tun haben. Ebenfalls wurde das Protokoll an den Stellen erweitert, an denen die bisherige Implementation die größeren Adressen von \ac{ipv6} nicht verarbeiten konnte.
 
+Die Adressierung wurde hierzu vollständig sowohl aus \ac{ospf}-Paketen als auch aus den betreffenden \ac{lsa} entfernt um Netzwerkprotokollunabhängigkeit  zu ermöglichen,jedoch wurden neue \ac{lsa} erstellt, die nun \ac{ipv6} Adressen verarbeiten können. Weiter wurde die Architektur von \ac{ospf} dahingehend verändert, dass nun aus Link-basis und nicht wie bisher auf IP-Subnetz basis adressiert wird. Ebenso wurde die Authentifizierung vollständig aus dem \ac{ospf}-Protokoll gestrichen, da \ac{ipv6} einen eigenen Authentication Header einführt. Alle Adressen innerhalb eines \ac{ospf}-Netzwerks bleiben in der Version 3 bei einem 32-bit Integer, wodurch die direkte Verbindung zwischen \ac{ipv6}-Adressen und Area-Identifiern nicht mehr möglich ist. \citep{ospfv3}
 \section{Fazit/Ausblick}
 Julian
 
