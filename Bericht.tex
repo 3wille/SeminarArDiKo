@@ -27,7 +27,6 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 
 \author{Frederik Wille, Julian Deinert}
 \date{\today}
-
 \begin{document}
 
 
@@ -86,14 +85,11 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 		\acro{lsa}[LSA]{Link State Advertisements}
 		\acro{ietf}[IETF]{Internet Engineering Task Force}
 		\acro{rfc}[RFC]{Request for Comments}
+		\acro{seq}[SEQ]{Sequenznummer}
 \end{acronym}
 \newpage
 \setcounter{page}{1}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{abstract}
-ABSTRACT
-
-\end{abstract}
 
 \section{Einleitung/Motivation}
 % Freddy
@@ -160,18 +156,18 @@ Startet ein Router in einem neuen, unbekannten Netzwerk, trägt er zunächst die
 Solch ein Eintrag enthält neben der Bezeichnung des Routers auch ein Kantengewicht, welches die Verbindungsqualität zu diesem Router beschreibt.
 Das Kantengewicht kann zum Beispiel die Latenz zum Nachbar-Router sein.
 Dies sichert, dass dem Router bekannt ist, zu welchem anderen Router er die qualitativ beste Verbindung hat. Nachdem jeder Router all seine Nachbar-Router erkannt hat und seine lokale Routing-Tabelle aufgebaut hat, schickt dieser Link-State-Pakete an seine Nachbar-Router.
-Diese Link-State-Pakete enthalten alle Nachbar-Router des Routers und die Kantengewichte zu diesen, sowie eine fortlaufende Sequenznummer und einen Zähler für das Alter des Pakets.
+Diese Link-State-Pakete enthalten alle Nachbar-Router des Routers und die Kantengewichte zu diesen, sowie eine fortlaufende \ac{seq} und einen Zähler für das Alter des Pakets.
 Jeder Router empfängt die Link-State-Pakete seiner Nachbar-Router und leitet diese an all seine Nachbar-Router weiter, die diese Pakete noch nicht erhalten haben.
 Durch die Link-State-Pakete erhält jeder Router mehr Information über die Topologie des Netzwerks.
 Die ankommenden Pakete werden von jedem Router in einem Paketpuffer verarbeitet.
 
 Bei dieser Verarbeitung spielen die zwei Zähler in den Link-State-Paketen eine wichtige Rolle zur Fehlererkennung.
-Diese verhindern, dass ein Router veraltete Topologie-Informationen in seine Routing-Tabelle einträgt. Dies sichert der Router, indem er nur Pakete mit der aktuell höchsten Sequenznummer annimmt.
-Pakete die zwar später eingetroffen sind, jedoch eine niedrigere Sequenznummer haben, werden als veraltet behandelt und verworfen.
-Eine Problematik bei diesem Vorgehen ist allerdings, dass auch Fehler in der Sequenznummer auftauchen können.
-So führt ein \textit{1-bit} Fehler bei der Sequenznummer dazu, dass aus Sequenznummer 4 Sequenznummer 65540 wird.
-Somit würden die Sequenznummern 5 bis 65540 als veraltete verworfen werden, bis der Router wieder neue Informationen akzeptiert.
-Ein ähnliches Problem tritt auf, wenn ein Router abstürzt und mit der Sequenznummer 0 neu beginnt.
+Diese verhindern, dass ein Router veraltete Topologie-Informationen in seine Routing-Tabelle einträgt. Dies sichert der Router, indem er nur Pakete mit der aktuell höchsten \ac{seq} annimmt.
+Pakete die zwar später eingetroffen sind, jedoch eine niedrigere \ac{seq} haben, werden als veraltet behandelt und verworfen.
+Eine Problematik bei diesem Vorgehen ist allerdings, dass auch Fehler in der \ac{seq} auftauchen können.
+So führt ein \textit{1-bit} Fehler bei der \ac{seq} dazu, dass aus \ac{seq} 4 \ac{seq} 65540 wird.
+Somit würden die \ac{seq} 5 bis 65540 als veraltete verworfen werden, bis der Router wieder neue Informationen akzeptiert.
+Ein ähnliches Problem tritt auf, wenn ein Router abstürzt und mit der \ac{seq} 0 neu beginnt.
 Um diesen Problemen entegegen zu wirken, enthält das Paket auch jeweils einen Alterszähler.
 Dieser wird zu Beginn auf eine vordefinierte \ac{ttl} eingestellt und beispielsweise jede Sekunde um 1 dekrementiert.
 Erreicht der Alterszähler den Wert 0, wird das Paket verworfen. \citep{AndrewS.Tanenbaum2010}
@@ -297,7 +293,8 @@ Mit der Einführung von \ac{ipv6} musste das \ac{ospf}-Protokoll in einigen Bere
 Die Adressierung wurde hierzu vollständig sowohl aus \ac{ospf}-Paketen als auch aus den betreffenden \ac{lsa} entfernt um Netzwerkprotokollunabhängigkeit  zu ermöglichen,jedoch wurden neue \ac{lsa} erstellt, die nun \ac{ipv6} Adressen verarbeiten können. Weiter wurde die Architektur von \ac{ospf} dahingehend verändert, dass nun aus Link-basis und nicht wie bisher auf IP-Subnetz basis adressiert wird. Ebenso wurde die Authentifizierung vollständig aus dem \ac{ospf}-Protokoll gestrichen, da \ac{ipv6} einen eigenen Authentication Header einführt. Alle Adressen innerhalb eines \ac{ospf}-Netzwerks bleiben in der Version 3 bei einem 32-bit Integer, wodurch die direkte Verbindung zwischen \ac{ipv6}-Adressen und Area-Identifiern nicht mehr möglich ist. \citep{ospfv3}
 \newpage
 \section{Fazit/Ausblick}
-Julian
+Seit seiner Konzeptionierung 1987 hat sich das \ac{ospf}-Protokoll zu einem der meist-verwendeten Link-State-Implementierungen im Internet entwickelt. Das Protokoll ermöglicht es, immer größer-werdende Netzwerke effizient zu verbinden und trägt maßgeblich dazu bei, dass das Internet nicht nur in seiner gegenwärtigen Form bestehen bleibt, sondern sich auch immer weiter entwickelt. Der zugrunde liegende Dijkstra-Algorithmus sichert, dass das \ac{ospf}-Protokoll stabil und schnell auf Topologieänderungen reagieren kann und die effizienteste Route innerhalb großer Netzwerke findet. Mit der Protokollversion 3 ist \ac{ospf} auch mit \ac{ipv6} kompatibel und spielt somit auch in der Zukunft des Internets eine zentrale Rolle. \\
+Zusammenfassend ist das \ac{ospf}-Protokoll als sehr wichtiges Routing-Protokoll einzuordnen, dass sich durch ein hohes Maß an Effizienz, Stabilität sowie Skalierbarkeit auszeichnet und eine der tragenden Säulen des Internets darstellt. 
 
 \clearpage
 %\nocite{*}
