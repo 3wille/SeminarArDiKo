@@ -99,10 +99,20 @@ ABSTRACT
 % Freddy
 % Layer 3
 % routing vs forwarding
+\newpage
 \section{Routing Protokolle}
 \subsection{IGP und EGP}
 % Freddy
-Im globalem Internet werden, im Bezug auf die Beziehung zweier kommunizierenden Router, zwei Arten von Routing Protokollen verwendet. Unterschieden werden Protokolle in \ac{egp}, die zwischen zwei Netzen Routen vermitteln und \ac{igp}, die innerhalb eines Netzes das Routing übernehmen.
+Im globalem Internet werden, im Bezug auf die Beziehung zweier kommunizierenden Router, zwei Arten von Routing Protokollen verwendet.
+Unterschieden werden Protokolle in \ac{egp}, die zwischen zwei Netzen Routen vermitteln und \ac{igp}, die innerhalb eines Netzes das Routing übernehmen.
+Veranschaulicht wird dies in Abbildung \ref{igp_egp}.
+
+\begin{figure}[h]
+\includegraphics[width=1.0\textwidth]{images/igp_egp.jpg}
+\caption[igp egp]{EGP und IGP\footnotemark}
+\label{igp_egp}
+\end{figure}
+\footnotetext{\citep[Quelle:][]{mcquerry2008}}
 
 Die ansonsten getrennten Netze werden durch ein oder mehrere Gateways verbunden. Gateways sind Router, die zwei Netze über ein \ac{egp} verbinden. Über das \ac{egp} werden Routen zu den eigenen und auch anderen Netzen ausgetauscht. Im Internet sind Netze als Autonome Systeme organisiert, die \ac{bgp} als \ac{egp} nutzen.
 
@@ -126,7 +136,7 @@ Dabei bekommt der Nachbar des ausgefallenen Routers eine neue Router von anderen
 \caption[count to inf]{Count to Infinity Problem\footnotemark}
 \label{count_to_inf}
 \end{figure}
-\footnotetext{aus AndrewS.Tanenbaum2010}
+\footnotetext{\citep[Quelle:][]{AndrewS.Tanenbaum2010}}
 Abbildung~\ref{count_to_inf}b zeigt das Count to Infinity Problem bei 5 in Reihe geschalteten Routern. Bei dem ersten Schritt ``Initially'' fällt der Knoten A aus. B bemerkt dies und bekommt beim ersten Austausch (exchange) von C einen Vektor mit der Distanz von 2 zu A. Da bei jedem Update die Tabelle komplett überschrieben werden muss, übernimmt B die neue Route mit Distanz 3 von C. Danach übernimmt C das folgende Update von B und trägt als Distanz 4 in seine Tabelle ein. Dies wiederholt sich auf allen verbliebenen Routern bis in die Unendlichkeit. Um dies abzukürzen und nicht zur höchsten vom jeweiligen Prozessor berechenbaren Zahl laufen zulassen, ist Unendlichkeit in den Protokollen definiert. Bei \ac{rip} wurde 16 gewählt. Dadurch können Routen maximal über 15 Router gehen. Es gibt mehrere Erweiterungen, die das Count-to-Infinity Problem lösen. Ein Beispiel ist Split-Horizon, bei dem genau die oben entstehende Schleife verhindert wird, indem Routen nicht an den Router, von dem sie gelernt wurden, weiter gegeben werden.
 
 % \subsubsection{Bellman-Ford Algorithmus}
@@ -201,6 +211,7 @@ def Dijkstra(Graph, source):
 
   return dist[], prev[]
 \end{minted}
+\newpage
 
 \section{Open Shortest Path First}
 \ac{ospf} ist das aktuell weit verbreiteste Routing Protokoll im Internet.
@@ -266,12 +277,15 @@ Da eins der minimale Wert für die Metrik ist, muss die Formel für aktuelle Net
 Heutzutage werden für Clientnetze mindestens 1Gbit/s Ethernet und für den Backbone teilweise 100Gbit/s und mehr verwendet.
 Die Formeln beziehungsweise die Referenzwerte sollten innerhalb einer Area, besser innerhalb des gesamten Netzes konsistent konfiguriert sein.
 
-Haben zwei Pfade die selbe Metrik, führt \ac{osfp} automatisch Load-Balancing durch.
+Router präferieren Intra-Area Routen, welche nur innerhalb der eigenen Area verlaufen, gegenüber Pfaden, die die Area verlassen, den Inter-Area Routen.
+
+Haben zwei Pfade die selbe Metrik, führt \ac{ospf} automatisch Load-Balancing durch.
 Dazu werden Pakete im round-robin Verfahren auf alle Pfade mit der selben Metrik verteilt.
 \subsection{OSPF v3}
 Mit der Einführung von \ac{ipv6} musste das \ac{ospf}-Protokoll in einigen Bereichen geändert werden. Dies betrifft vor allem die Teile des Protokolls, die mit Adressierung zu tun haben. Ebenfalls wurde das Protokoll an den Stellen erweitert, an denen die bisherige Implementation die größeren Adressen von \ac{ipv6} nicht verarbeiten konnte.
 
 Die Adressierung wurde hierzu vollständig sowohl aus \ac{ospf}-Paketen als auch aus den betreffenden \ac{lsa} entfernt um Netzwerkprotokollunabhängigkeit  zu ermöglichen,jedoch wurden neue \ac{lsa} erstellt, die nun \ac{ipv6} Adressen verarbeiten können. Weiter wurde die Architektur von \ac{ospf} dahingehend verändert, dass nun aus Link-basis und nicht wie bisher auf IP-Subnetz basis adressiert wird. Ebenso wurde die Authentifizierung vollständig aus dem \ac{ospf}-Protokoll gestrichen, da \ac{ipv6} einen eigenen Authentication Header einführt. Alle Adressen innerhalb eines \ac{ospf}-Netzwerks bleiben in der Version 3 bei einem 32-bit Integer, wodurch die direkte Verbindung zwischen \ac{ipv6}-Adressen und Area-Identifiern nicht mehr möglich ist. \citep{ospfv3}
+\newpage
 \section{Fazit/Ausblick}
 Julian
 
