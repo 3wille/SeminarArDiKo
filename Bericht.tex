@@ -256,6 +256,16 @@ Als Beispiel kann ein \ac{asbr} auch an ein weiteres \ac{ospf} oder ein \ac{rip}
 
 Jeder Router kann mehrere Typen haben. So sind Router, die das Backbone mit einer anderen Area verbinden, gleichzeitig \ac{abr}s und Backbone Router.
 \subsection{Metriken}
+% Freddy
+\ac{ospf} nutzt als Pfadmetrik einen Wert, der als Cost bezeichnet wird.
+Als Referenzwert ist ein 100Mbit/s Ethernet-Link gegeben.
+Damit sind die kosten als $10^8/Bandwidth\footnote{Bandwidth hier z.B. als Ethernet Link Geschwindigkeit}$ definiert, bei einem 100Mbit/s Link ergibt dies die Cost 1 und bei einem 10Mbit/s Link die Cost 10.
+Da eins der minimale Wert für die Metrik ist, muss die Formel für aktuelle Netze angepasst werden.
+Heutzutage werden für Clientnetze mindestens 1Gbit/s Ethernet und für den Backbone teilweise 100Gbit/s und mehr verwendet.
+Die Formeln beziehungsweise die Referenzwerte sollten innerhalb einer Area, besser innerhalb des gesamten Netzes konsistent konfiguriert sein.
+
+Haben zwei Pfade die selbe Metrik, führt \ac{osfp} automatisch Load-Balancing durch.
+Dazu werden Pakete im round-robin Verfahren auf alle Pfade mit der selben Metrik verteilt.
 \subsection{OSPF v3}
 
 \section{Fazit/Ausblick}
