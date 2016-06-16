@@ -86,6 +86,7 @@ Seminararbeit\\ Architekturen und Dienste von Kommunikationsnetzen
 		\acro{ietf}[IETF]{Internet Engineering Task Force}
 		\acro{rfc}[RFC]{Request for Comments}
 		\acro{seq}[SEQ]{Sequenznummer}
+		\acro{ospfigp}[OSPFIGP]{Open Shortest Path First Interior Gateway Protocol}
 \end{acronym}
 \newpage
 \setcounter{page}{1}
@@ -222,15 +223,37 @@ def Dijkstra(Graph, source):
 
   return dist[], prev[]
 \end{minted}
+\citep{weDijkstra}
 \newpage
 
 \section{Open Shortest Path First}
 \ac{ospf} ist das aktuell weit verbreiteste Routing Protokoll im Internet.
 Es gehört zu den Link-State Protokollen und nutzt den Dijkstra's Algorithmus.
 Das Protokoll wurde von der \ac{ietf} mittels \ac{rfc} entwickelt und ist ohne Lizenz nutzbar.
-\ac{ospf} wurde 1987 konzeptioniert und ist seit 1989 als \ac{rfc} 1131\footnote{https://tools.ietf.org/html/rfc1131} festgehalten.
-In den \ac{rfc}s 3270\footnote{https://tools.ietf.org/html/rfc3270} und 5187\footnote{https://tools.ietf.org/html/rfc5187} wurden die Versionen 2 und 3 des Prokolls jeweils final beschrieben.
+\ac{ospf} wurde 1987 konzeptioniert und ist seit 1989 als \ac{rfc} 1131\footnote{\url{https://tools.ietf.org/html/rfc1131}} festgehalten.
+In den \ac{rfc}s 3270\footnote{\url{https://tools.ietf.org/html/rfc3270}} und 5187\footnote{\url{https://tools.ietf.org/html/rfc5187}} wurden die Versionen 2 und 3 des Prokolls jeweils final beschrieben.
 \citep{weOSPF}
+\subsection{Protokoll}
+Zur Kommunikation zwischen den Routern wird in \ac{ospf} das eigene Protokol \ac{ospfigp} genutzt. Es nutz kein Layer 4 Protokoll, sondern baut direkt auf \ac{ip} Paketen auf. Zur Indentifizierung von \ac{ospfigp} Paketen wird im \ac{ip} Header die Protokol Nummer 89 genutzt.\citep{ianaProtNr}
+\begin{figure}[H]
+\includegraphics[width=1.0\textwidth]{images/ospf_igp_header.jpg}
+\caption[OSPFIGP header]{OSPFIGP Header\footnotemark}
+\label{fig:ospfigp-header}
+\end{figure}
+\footnotetext{\citep[Quelle:][]{ciscoDocWikiOSPF}}
+\ac{ospfigp} selbst nutzt einen 24-byte Header, der zum einen den Absender über Router und Area ID bestimmt und zum Anderen durch Versions Nummer, die Paketlänge, eine Checksumme und Daten zur Authentifizierung für die richtige Verarbeitung des Paketes sorgt.
+Auch enthalten ist ein Byte für den Typ des Paketes. Es gibt fünf Typen von \ac{ospfigp} Paketen: Hello, Database description und die Link-State Pakettypen Request, Update und Acknowledgment. \citep{ciscoDocWikiOSPF}
+
+Hello Pakete stellen die Nachbarschaft zwischen zwei Routern her. Sie werden nach dem Starten des Routers regelmäßig über alle Interfaces gesendet. Wenn ein Router eine Zeit lang kein Hello Paket mehr von einem seiner Nachbarn bekommt, betrachtet er die Verbindung als aufgelöst.\citep{weOSPF} Das Interval zwischen zwei Hello Paketen(hello interval) und die Zeit vor Deaktivieren der Route(dead interval) sind konfigurierbar, der Standard beim Hello Interval ist 10 Sekunden und beim Dead Interval das vierfache, also 40 Sekunden.\citep{KarlSolie2001}
+
+Die Database description enthält die gesamte \ac{lsdb} und wird meist nach dem Entstehen einer Nachbarschaft ausgetauscht.
+
+Ein Link-State Request fordert einen Router auf, einen Teil seiner \ac{lsdb} zurück zuschicken. Ein Router schickt einen solchen Request, wenn er erkennt, dass ein Teil seiner \ac{lsdb} veraltet ist.
+
+Als Antwort auf die Requests schicken Router Link-State Updates. Dieser Pakettyp wird auch für normale \ac{lsa} genutzt. Als Nutzdaten wird ein Teil der \ac{lsdb} geschickt.
+
+Das erhalten eines Link-State Updates wird mit einem Acknowledgement bestätigt.
+\citep{ciscoDocWikiOSPF}
 \subsection{Areas}
 Ein \ac{ospf} Netzwerk ist häufig in sogenannte Areas aufgeteilt.
 Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt.
