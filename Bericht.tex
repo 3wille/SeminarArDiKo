@@ -101,6 +101,7 @@ Hierzu wurden Routing Algorithmen und Protokolle entworfen, die selbstständig R
 Routing bezeichnet meist eine Wegfindung auf Layer 3 anhand der IP-Adresse, die in jedem IP-Paket hinterlegt ist.
 Es gibt jedoch auch Routing Protokolle, die anhand von Layer 2 Adressen arbeiten und vorallem in Ad-Hoc-Netzen eingesetzt werden.
 Routing umfasst nur das finden einer Route durch das Netz, die Verarbeitung von abzusendenden Paketen nennt sich Forwarding.
+\citep{AndrewS.Tanenbaum2010}
 
 Diese Arbeit erklärt Grundlagen des Routings auf Layer 3, um das verbreitete \ac{ospf} Protokoll näher zu erläutern.
 % Layer 3
@@ -121,18 +122,22 @@ Veranschaulicht wird dies in Abbildung \ref{igp_egp}.
 \footnotetext{\citep[Quelle:][]{mcquerry2008}}
 
 Die ansonsten getrennten Netze werden durch ein oder mehrere Gateways verbunden. Gateways sind Router, die zwei Netze über ein \ac{egp} verbinden. Über das \ac{egp} werden Routen zu den eigenen und auch anderen Netzen ausgetauscht. Im Internet sind Netze als Autonome Systeme organisiert, die \ac{bgp} als \ac{egp} nutzen.
+\citep{mcquerry2008}
 
 Innerhalb eines Netzes müssen Routen von jedem Rechner zu jedem anderen Rechner gefunden werden. Über ein \ac{igp} tauschen die Router des Netzes die von ihnen erreichbaren Rechner aus.
 Ein Rechner ist dabei immer an mindestens einem Router über ein Layer-2-Netz angebunden, das heißt, mehrere Rechner können über Switches und Hubs an einen Port des Routers angeschlossen sein.
+\citep{AndrewS.Tanenbaum2010}
 
 \ac{igp}s werden in zwei Klassen unterteilt, Distance-Vector- und Link-State-Protokolle.
 \subsection{Distance-Vector-Routing-Protokolle}
 % Freddy
 Die Klasse der Distance-Vector-Protokolle setzt den Bellman-Ford-Algorithmus um. Dazu werden periodisch Arrays, auch Vektoren genannt, zu den direkten Nachbarroutern verschickt. Jeder dieser Vektoren enthält die eigenen Distanzen zu allen Zielen, die der Router zum Zeitpunkt des Sendens kennt. Dieser Distanz-Vektor gibt der Protokollklasse ihren Namen.
-
+\citep{weDVRP}
 Zu Beginn erkennt jeder Router seine direkten Nachbarn und ermittelt die Distanz zu diesem. Aus den direkten Nachbarn wird dann ein Vektor gebildet, der dann an genau diese Nachbarn geschickt wird. Nun empfangen alle Router von ihren Nachbarn eine Reihe an Vektoren, aus denen eine Routing Tabelle berechnet werden muss. Dafür wird pro aktuell bekanntem Ziel der minimale Eintrag aller empfangener Vektoren bestimmt und als neue Distanz in die Routing Tabelle aufgenommen. Dazu wird die Adresse des Routers, von dem die Information stammt und der dazugehörige physikalische Port vermerkt. Die Herkunft wird nur lokal zum Forwarding benötigt und wird somit nicht im Vektor mitgeschickt.
+\citep{rfc1058}
 
 Der Vorgang wird periodisch wiederholt, sodass nach und nach Routen zu allen Zielen bekannt werden. Die Tabellen der Router konvergieren über die Zeit gegen die besten Routen. Gezeigt wird dies in Abbildung~\ref{count_to_inf}a. Die benötigte Zeit kann je nach gewählter Update-Rate sehr hoch sein. Bei \ac{rip} als Beispiel wird nur alle 30 Sekunden ein Vektor verschickt. Dies führt dazu, dass bei nur 4 Routern, die in Reihe verbunden sind, bereits eine Minute für  die drei Updates\footnote{bei den Zeitpunkten 0s, 30s, 60s} benötigt wird.
+\citep{weRIP}
 
 Sobald ein Router ausfällt ensteht das Count-to-infinity Problem.
 Dabei bekommt der Nachbar des ausgefallenen Routers eine neue Router von anderen Nachbarn, erkennt jedoch nicht, dass die Route von ihm selbst kommt.
@@ -144,7 +149,7 @@ Dabei bekommt der Nachbar des ausgefallenen Routers eine neue Router von anderen
 \end{figure}
 \footnotetext{\citep[Quelle:][]{AndrewS.Tanenbaum2010}}
 Abbildung~\ref{count_to_inf}b zeigt das Count to Infinity Problem bei 5 in Reihe geschalteten Routern. Bei dem ersten Schritt ``Initially'' fällt der Knoten A aus. B bemerkt dies und bekommt beim ersten Austausch (exchange) von C einen Vektor mit der Distanz von 2 zu A. Da bei jedem Update die Tabelle komplett überschrieben werden muss, übernimmt B die neue Route mit Distanz 3 von C. Danach übernimmt C das folgende Update von B und trägt als Distanz 4 in seine Tabelle ein. Dies wiederholt sich auf allen verbliebenen Routern bis in die Unendlichkeit. Um dies abzukürzen und nicht zur höchsten vom jeweiligen Prozessor berechenbaren Zahl laufen zulassen, ist Unendlichkeit in den Protokollen definiert. Bei \ac{rip} wurde 16 gewählt. Dadurch können Routen maximal über 15 Router gehen. Es gibt mehrere Erweiterungen, die das Count-to-Infinity Problem lösen. Ein Beispiel ist Split-Horizon, bei dem genau die oben entstehende Schleife verhindert wird, indem Routen nicht an den Router, von dem sie gelernt wurden, weiter gegeben werden.
-
+\citep{AndrewS.Tanenbaum2010}
 % \subsubsection{Bellman-Ford Algorithmus}
 % Freddy
 \subsection{Link-State-Routing-Protokolle}
@@ -225,7 +230,7 @@ Es gehört zu den Link-State Protokollen und nutzt den Dijkstra's Algorithmus.
 Das Protokoll wurde von der \ac{ietf} mittels \ac{rfc} entwickelt und ist ohne Lizenz nutzbar.
 \ac{ospf} wurde 1987 konzeptioniert und ist seit 1989 als \ac{rfc} 1131\footnote{https://tools.ietf.org/html/rfc1131} festgehalten.
 In den \ac{rfc}s 3270\footnote{https://tools.ietf.org/html/rfc3270} und 5187\footnote{https://tools.ietf.org/html/rfc5187} wurden die Versionen 2 und 3 des Prokolls jeweils final beschrieben.
-
+\citep{weOSPF}
 \subsection{Areas}
 Ein \ac{ospf} Netzwerk ist häufig in sogenannte Areas aufgeteilt.
 Dies schafft eine übersichtliche Struktur und erleichtert die Wartung von großen Netzwerken. In Areas werden mehrere Router zusammen gefasst und Link-State Informationen werden innerhalb der Area gespeichert und sind auch nur in ihr bekannt.
@@ -274,6 +279,7 @@ Die \ac{asbr} sind Gateways zu anderen Netzen, welche meist auch andere \ac{as} 
 Als Beispiel kann ein \ac{asbr} auch an ein weiteres \ac{ospf} oder ein \ac{rip} Netz angeschlossen sein.
 
 Jeder Router kann mehrere Typen haben. So sind Router, die das Backbone mit einer anderen Area verbinden, gleichzeitig \ac{abr}s und Backbone Router.
+\citep{KarlSolie2001}
 \subsection{Metriken}
 % Freddy
 \ac{ospf} nutzt als Pfadmetrik einen Wert, der als Cost bezeichnet wird.
@@ -287,6 +293,7 @@ Router präferieren Intra-Area Routen, welche nur innerhalb der eigenen Area ver
 
 Haben zwei Pfade die selbe Metrik, führt \ac{ospf} automatisch Load-Balancing durch.
 Dazu werden Pakete im round-robin Verfahren auf alle Pfade mit der selben Metrik verteilt.
+\citep{juniperCost}
 \subsection{OSPF v3}
 Mit der Einführung von \ac{ipv6} musste das \ac{ospf}-Protokoll in einigen Bereichen geändert werden. Dies betrifft vor allem die Teile des Protokolls, die mit Adressierung zu tun haben. Ebenfalls wurde das Protokoll an den Stellen erweitert, an denen die bisherige Implementation die größeren Adressen von \ac{ipv6} nicht verarbeiten konnte.
 
@@ -294,7 +301,7 @@ Die Adressierung wurde hierzu vollständig sowohl aus \ac{ospf}-Paketen als auch
 \newpage
 \section{Fazit/Ausblick}
 Seit seiner Konzeptionierung 1987 hat sich das \ac{ospf}-Protokoll zu einem der meist-verwendeten Link-State-Implementierungen im Internet entwickelt. Das Protokoll ermöglicht es, immer größer-werdende Netzwerke effizient zu verbinden und trägt maßgeblich dazu bei, dass das Internet nicht nur in seiner gegenwärtigen Form bestehen bleibt, sondern sich auch immer weiter entwickelt. Der zugrunde liegende Dijkstra-Algorithmus sichert, dass das \ac{ospf}-Protokoll stabil und schnell auf Topologieänderungen reagieren kann und die effizienteste Route innerhalb großer Netzwerke findet. Mit der Protokollversion 3 ist \ac{ospf} auch mit \ac{ipv6} kompatibel und spielt somit auch in der Zukunft des Internets eine zentrale Rolle. \\
-Zusammenfassend ist das \ac{ospf}-Protokoll als sehr wichtiges Routing-Protokoll einzuordnen, dass sich durch ein hohes Maß an Effizienz, Stabilität sowie Skalierbarkeit auszeichnet und eine der tragenden Säulen des Internets darstellt. 
+Zusammenfassend ist das \ac{ospf}-Protokoll als sehr wichtiges Routing-Protokoll einzuordnen, dass sich durch ein hohes Maß an Effizienz, Stabilität sowie Skalierbarkeit auszeichnet und eine der tragenden Säulen des Internets darstellt.
 
 \clearpage
 %\nocite{*}
